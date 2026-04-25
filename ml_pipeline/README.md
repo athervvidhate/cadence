@@ -95,6 +95,19 @@ python ml_pipeline/symptom_keyword_extractor.py \
 python -m unittest discover -s ml_pipeline/tests -p "test_*.py"
 ```
 
+## Evaluate extraction accuracy
+
+```bash
+python ml_pipeline/eval_regimen_extraction.py \
+  --dataset "ml_pipeline/data/chf_synthetic_discharge_summaries_v1.json" \
+  --predictions-dir "ml_pipeline/out/extractions" \
+  --output-dir "ml_pipeline/out/eval"
+```
+
+Outputs:
+- `ml_pipeline/out/eval/summary.json`
+- `ml_pipeline/out/eval/report.md`
+
 ## Notes
 
 - Default model is `gemma-3-27b-it` (override with `--model` or `GEMMA_MODEL`).

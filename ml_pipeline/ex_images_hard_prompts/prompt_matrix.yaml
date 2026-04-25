@@ -1,0 +1,333 @@
+version: hard_real_photo_v1
+covers_images_root: ml_pipeline/ex_images
+total_targets: 30
+base_prompt: |
+  Generate a photorealistic smartphone photo of a printed single-page hospital discharge medication sheet.
+  The result must look like a real photo taken by an elderly person at home, not a clean scan.
+  Baseline constraints:
+  - Camera distance roughly 0.9 to 1.4 meters so text appears smaller and less perfect.
+  - Hand jitter causing slight motion blur and mild focus softness (still partly legible).
+  - Page is off-center with at least one edge slightly cropped.
+  - Uneven warm indoor lighting with local dark and bright regions.
+  - Mild JPEG compression artifacts and subtle sensor noise.
+  - Realistic domestic background context (table texture, pill box, glasses, or remote in frame edge).
+  - Natural paper look (small wrinkles or slight curl), no perfect flat scan geometry.
+  Keep all medical text semantically exact as provided in the document block.
+  Do not add, remove, or alter medication names, doses, frequencies, or times.
+variant_profiles:
+  clean: |
+    Difficulty profile: clean_hard
+    - Mild off-axis tilt (about 8 to 14 degrees).
+    - Page fills about 70 to 80 percent of frame (not perfectly close).
+    - Slight blur and lower contrast than a scanner.
+    - One soft corner shadow, but most lines remain recoverable.
+  angled_phone: |
+    Difficulty profile: angled_phone_hard
+    - Strong perspective skew (about 20 to 32 degrees).
+    - Shot from one side while standing; page fills about 55 to 68 percent of frame.
+    - Far edge has slight blur and keystone distortion.
+    - Dim room lighting plus a mild glare streak near top or side.
+  noisy_shadow: |
+    Difficulty profile: noisy_shadow_hard
+    - Low-light capture with visible ISO grain and JPEG artifacts.
+    - Broad soft shadow crosses part of the medication section.
+    - Mild motion blur and slight defocus in lower half.
+    - Uneven brightness with one small overexposed lamp-glare patch.
+documents:
+  chf_en_001:
+    language: en
+    discharge_text: |
+      PASADENA COMMUNITY HOSPITAL
+      After-Visit Summary (CHF Discharge)
+      Patient: Harold Nguyen    MRN: SYN-1001
+      Discharge Date: 2026-04-24
+      Primary Diagnosis: Acute on chronic systolic congestive heart failure
+
+      DISCHARGE MEDICATIONS (TAKE AS DIRECTED):
+      1. Furosemide 40 mg tablet - Take 1 tablet by mouth twice daily at 8:00 AM and 8:00 PM. Take with food.
+      2. Lisinopril 10 mg tablet - Take 1 tablet by mouth once daily at 8:00 AM.
+      3. Metoprolol Succinate ER 50 mg tablet - Take 1 tablet by mouth once daily at 8:00 AM. Do not crush.
+      4. Spironolactone 25 mg tablet - Take 1 tablet by mouth once daily at 8:00 AM.
+      5. Potassium Chloride ER 20 mEq tablet - Take 1 tablet by mouth once daily at 8:00 AM with breakfast.
+
+      Self-care instructions: daily morning weight, low sodium diet (<2 g/day), fluid restriction 1.5 L/day.
+  chf_en_002:
+    language: en
+    discharge_text: |
+      CEDARS-SINAI MEDICAL CENTER
+      Advanced Heart Failure Service - Discharge Medication Reconciliation
+      Patient: Robert Ellis    MRN: SYN-2044
+      Admit: 2026-04-19    Discharge: 2026-04-24
+      Final Diagnosis: Acute decompensated HFrEF, stage C
+
+      ACTIVE MEDICATION LIST (START/CONTINUE):
+      A. Sacubitril/Valsartan (Entresto) 49/51 mg tab - 1 tab PO BID (0900, 2100). HOLD if SBP <100.
+      B. Torsemide 40 mg tab - 1 tab PO qAM (0800).
+      C. Carvedilol 12.5 mg tab - 1 tab PO BID with meals (0900, 2100).
+      D. Empagliflozin 10 mg tab - 1 tab PO daily (0800).
+      E. Eplerenone 25 mg tab - 1 tab PO daily (0800).
+      F. Hydralazine 25 mg tab - 1 tab PO TID (0800, 1400, 2000).
+      G. Isosorbide Mononitrate ER 30 mg tab - 1 tab PO daily (0800).
+      H. Digoxin 0.125 mg tab - 1 tab PO daily (0800). Hold for HR <60.
+      I. Potassium Chloride ER 20 mEq tab - 1 tab PO daily (0800).
+      J. Apixaban 5 mg tab - 1 tab PO BID (0900, 2100).
+      K. Atorvastatin 40 mg tab - 1 tab PO qHS (2000).
+      L. Pantoprazole 40 mg tab - 1 tab PO daily, 30 min before breakfast (0730).
+
+      DISCONTINUE HOME MEDS: Lisinopril 10 mg daily; Metoprolol tartrate 25 mg BID; Ibuprofen 400 mg PRN.
+  chf_en_003:
+    language: en
+    discharge_text: |
+      KAISER PERMANENTE LOS ANGELES MEDICAL CENTER
+      Discharge Instructions - Congestive Heart Failure
+      Patient: Eleanor Park    MRN: SYN-3108
+      Discharge Date: 2026-04-23
+
+      YOUR DAILY HEART FAILURE MEDICINES:
+      - Bumetanide 1 mg tablet: Take 1 tablet at 7:00 AM and 1 tablet at 7:00 PM.
+      - Losartan 25 mg tablet: Take 1 tablet at 8:00 AM.
+      - Metoprolol Succinate ER 25 mg tablet: Take 1 tablet at 8:00 AM.
+      - Dapagliflozin 10 mg tablet: Take 1 tablet at 8:00 AM.
+      - Aspirin 81 mg chewable: Take 1 tablet at 8:00 AM with food.
+      - Atorvastatin 20 mg tablet: Take 1 tablet at 9:00 PM.
+
+      STOP: Hydrochlorothiazide 25 mg daily.
+      Diet: less than 2 grams sodium daily. Weigh every morning.
+  chf_en_004:
+    language: en
+    discharge_text: |
+      UCLA HEALTH SANTA MONICA MEDICAL CENTER
+      Medication Reconciliation at Discharge
+      Patient: Juanita Brooks    MRN: SYN-4420
+      Discharge Date: 2026-04-25
+      Diagnosis: Acute on chronic CHF exacerbation
+
+      Continue these medications:
+      1) Furosemide 80 mg PO every morning at 08:00.
+      2) Sacubitril/Valsartan 24/26 mg PO twice daily at 09:00 and 21:00.
+      3) Metoprolol Succinate ER 100 mg PO daily at 08:00.
+      4) Spironolactone 25 mg PO daily at 08:00.
+      5) Empagliflozin 10 mg PO daily at 08:00.
+      6) Potassium Chloride ER 10 mEq PO daily at 08:00 with breakfast.
+      7) Clopidogrel 75 mg PO daily at 08:00.
+      8) Rosuvastatin 20 mg PO nightly at 20:00.
+
+      Patient counseling: monitor dizziness, check blood pressure, low sodium diet.
+  chf_en_005:
+    language: en
+    discharge_text: |
+      PROVIDENCE SAINT JOSEPH MEDICAL CENTER
+      CHF Discharge Orders
+      Patient: Gregory Mills    MRN: SYN-5533
+      Discharge Date: 2026-04-22
+
+      Medication Plan (home):
+      - Torsemide 20 mg: 1 tab PO at 08:00 and 18:00.
+      - Lisinopril 5 mg: 1 tab PO at 08:00.
+      - Carvedilol 25 mg: 1 tab PO at 08:00 and 20:00 with meals.
+      - Spironolactone 25 mg: 1 tab PO daily at 08:00.
+      - Digoxin 0.125 mg: 1 tab PO daily at 08:00. Hold for HR <60.
+      - Warfarin 3 mg: 1 tab PO every evening at 18:00.
+      - Potassium Chloride ER 20 mEq: 1 tab PO daily at 08:00 with food.
+      - Pantoprazole 40 mg: 1 tab PO daily at 07:30, 30 min before breakfast.
+      - Atorvastatin 40 mg: 1 tab PO nightly at 20:00.
+
+      Anticoagulation clinic to monitor INR. Avoid NSAIDs.
+  chf_en_006:
+    language: en
+    discharge_text: |
+      SCRIPPS MEMORIAL HOSPITAL LA JOLLA
+      Cardiology Discharge Checklist
+      Patient: Michael Dominguez    MRN: SYN-6119
+      Discharge Date: 2026-04-25
+      Diagnosis: Heart failure with reduced ejection fraction
+
+      MEDICATIONS TO TAKE AT HOME:
+      1. Bumetanide 2 mg PO daily at 08:00.
+      2. Sacubitril/Valsartan 49/51 mg PO twice daily at 09:00 and 21:00.
+      3. Bisoprolol 5 mg PO daily at 08:00.
+      4. Eplerenone 50 mg PO daily at 08:00.
+      5. Empagliflozin 10 mg PO daily at 08:00.
+      6. Isosorbide Mononitrate ER 60 mg PO daily at 08:00.
+      7. Hydralazine 50 mg PO three times daily at 08:00, 14:00, and 20:00.
+      8. Potassium Chloride ER 10 mEq PO twice daily at 08:00 and 20:00.
+      9. Aspirin 81 mg PO daily at 08:00.
+      10. Omeprazole 20 mg PO daily at 07:30, before breakfast.
+
+      Do not restart prior amlodipine unless instructed by cardiology.
+  chf_en_007:
+    language: en
+    discharge_text: |
+      ST. MARY'S MEDICAL CENTER
+      Hospital Discharge Plan - CHF Program
+      Patient: Laverne Jacobs    MRN: SYN-7781
+      Discharge Date: 2026-04-21
+
+      TAKE THESE MEDICATIONS:
+      1) Furosemide 40 mg PO BID at 08:00 and 20:00.
+      2) Metolazone 2.5 mg PO Monday/Wednesday/Friday at 07:00.
+      3) Valsartan 80 mg PO daily at 08:00.
+      4) Carvedilol 12.5 mg PO BID at 08:00 and 20:00 with food.
+      5) Spironolactone 25 mg PO daily at 08:00.
+      6) Dapagliflozin 10 mg PO daily at 08:00.
+      7) Amiodarone 200 mg PO daily at 09:00.
+      8) Apixaban 5 mg PO BID at 09:00 and 21:00.
+      9) Potassium Chloride ER 20 mEq PO daily at 08:00.
+      10) Magnesium Oxide 400 mg PO daily at 13:00.
+      11) Atorvastatin 80 mg PO nightly at 21:00.
+
+      PRN medication listed separately: Acetaminophen 500 mg every 6h as needed for pain.
+  chf_en_008:
+    language: en
+    discharge_text: |
+      VA GREATER LOS ANGELES HEALTHCARE SYSTEM
+      Transition of Care - Congestive Heart Failure
+      Veteran: Thomas Bell    MRN: SYN-8824
+      Discharge Date: 2026-04-24
+
+      Medication instructions:
+      - Torsemide 20 mg by mouth every morning at 08:00.
+      - Lisinopril 20 mg by mouth daily at 08:00.
+      - Metoprolol Succinate ER 100 mg by mouth daily at 08:00.
+      - Empagliflozin 10 mg by mouth daily at 08:00.
+      - Aspirin 81 mg by mouth daily at 08:00 with food.
+      - Rosuvastatin 40 mg by mouth nightly at 20:00.
+      - Nitroglycerin SL 0.4 mg tablet under tongue as needed for chest pain, up to 3 doses in 15 minutes.
+
+      Call 911 if chest pain does not improve after nitroglycerin.
+  chf_es_009:
+    language: es
+    discharge_text: |
+      HOSPITAL GENERAL DEL VALLE
+      Resumen de Alta - Insuficiencia Cardiaca Congestiva
+      Paciente: Manuel Ortiz    Historia: SYN-ES-3302
+      Fecha de alta: 24/04/2026
+
+      MEDICAMENTOS AL ALTA:
+      1) Furosemida 40 mg - Tomar 1 tableta cada 12 horas: 08:00 y 20:00. Con comida.
+      2) Enalapril 10 mg - Tomar 1 tableta cada 24 horas: 08:00.
+      3) Carvedilol 6.25 mg - Tomar 1 tableta cada 12 horas: 08:00 y 20:00, con alimentos.
+      4) Espironolactona 25 mg - Tomar 1 tableta cada 24 horas: 08:00.
+      5) Dapagliflozina 10 mg - Tomar 1 tableta cada 24 horas: 08:00.
+      6) Atorvastatina 40 mg - Tomar 1 tableta por la noche: 20:00.
+
+      Indicaciones: dieta baja en sodio, peso diario por la manana.
+  chf_es_010:
+    language: es
+    discharge_text: |
+      CENTRO MEDICO SANTA ANA
+      Plan de Medicacion al Egreso - Paciente con CHF
+      Paciente: Rosa Mejia    Historia: SYN-ES-4410
+      Fecha de alta: 25/04/2026
+
+      Medicamentos indicados:
+      - Torasemida 20 mg: 1 tableta VO cada 12 horas (08:00 y 20:00).
+      - Sacubitrilo/Valsartan 24/26 mg: 1 tableta VO cada 12 horas (09:00 y 21:00).
+      - Bisoprolol 2.5 mg: 1 tableta VO cada 24 horas (08:00).
+      - Eplerenona 25 mg: 1 tableta VO cada 24 horas (08:00).
+      - Digoxina 0.125 mg: 1 tableta VO cada 24 horas (08:00). Suspender si FC <60.
+      - Cloruro de potasio 20 mEq: 1 tableta VO cada 24 horas (08:00) con desayuno.
+      - Apixaban 5 mg: 1 tableta VO cada 12 horas (09:00 y 21:00).
+      - Pantoprazol 40 mg: 1 tableta VO cada 24 horas a las 07:30, antes del desayuno.
+
+      No tomar antiinflamatorios sin autorizacion medica.
+targets:
+  - image_path: ml_pipeline/ex_images/chf_en_001/clean.jpeg
+    doc_id: chf_en_001
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_001/angled_phone.jpeg
+    doc_id: chf_en_001
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_001/noisy_shadow.jpeg
+    doc_id: chf_en_001
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_002/clean.jpeg
+    doc_id: chf_en_002
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_002/angled_phone.jpeg
+    doc_id: chf_en_002
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_002/noisy_shadow.jpeg
+    doc_id: chf_en_002
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_003/clean.jpeg
+    doc_id: chf_en_003
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_003/angled_phone.jpeg
+    doc_id: chf_en_003
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_003/noisy_shadow.jpeg
+    doc_id: chf_en_003
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_004/clean.jpeg
+    doc_id: chf_en_004
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_004/angled_phone.jpeg
+    doc_id: chf_en_004
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_004/noisy_shadow.jpeg
+    doc_id: chf_en_004
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_005/clean.jpeg
+    doc_id: chf_en_005
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_005/angled_phone.jpeg
+    doc_id: chf_en_005
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_005/noisy_shadow.jpeg
+    doc_id: chf_en_005
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_006/clean.jpeg
+    doc_id: chf_en_006
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_006/angled_phone.jpeg
+    doc_id: chf_en_006
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_006/noisy_shadow.jpeg
+    doc_id: chf_en_006
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_007/clean.jpeg
+    doc_id: chf_en_007
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_007/angled_phone.jpeg
+    doc_id: chf_en_007
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_007/noisy_shadow.jpeg
+    doc_id: chf_en_007
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_en_008/clean.jpeg
+    doc_id: chf_en_008
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_en_008/angled_phone.jpeg
+    doc_id: chf_en_008
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_en_008/noisy_shadow.jpeg
+    doc_id: chf_en_008
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_es_009/clean.jpeg
+    doc_id: chf_es_009
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_es_009/angled_phone.jpeg
+    doc_id: chf_es_009
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_es_009/noisy_shadow.jpeg
+    doc_id: chf_es_009
+    variant: noisy_shadow
+
+  - image_path: ml_pipeline/ex_images/chf_es_010/clean.jpeg
+    doc_id: chf_es_010
+    variant: clean
+  - image_path: ml_pipeline/ex_images/chf_es_010/angled_phone.jpeg
+    doc_id: chf_es_010
+    variant: angled_phone
+  - image_path: ml_pipeline/ex_images/chf_es_010/noisy_shadow.jpeg
+    doc_id: chf_es_010
+    variant: noisy_shadow

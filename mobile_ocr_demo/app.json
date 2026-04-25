@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "cadence-mobile-ocr-demo",
+    "slug": "cadence-mobile-ocr-demo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.cadencemobileocrdemo",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.anonymous.cadencemobileocrdemo"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-dev-client",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow this app to read discharge paper photos for on-device OCR.",
+          "cameraPermission": "Allow this app to capture discharge papers and medication labels for OCR."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "255b9f1e-99f5-4279-a8fa-af6ee0528eb4"
+      }
+    }
+  }
+}
