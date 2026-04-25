@@ -227,13 +227,14 @@ export async function synthesizeVoice(
   if (IS_STUB) {
     return { audioUrl: "", durationMs: 3000, cached: false };
   }
-  const res = await fetch(`${BASE_URL}/api/voice/synthesize`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+  // Backend streams audio — build a GET URL that expo-av can load directly
+  const params = new URLSearchParams({
+    patientId: data.patientId,
+    text: data.text,
+    language: data.language,
   });
-  if (!res.ok) throw new Error(`synthesizeVoice failed: ${res.status}`);
-  return res.json() as Promise<SynthesizeVoiceResponse>;
+  const audioUrl = `${BASE_URL}/api/voice/stream?${params.toString()}`;
+  return { audioUrl, durationMs: 0, cached: false };
 }
 
 // ─── GET /api/patients/:id/dashboard ─────────────────────────────────────────

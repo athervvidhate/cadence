@@ -1,0 +1,7 @@
+{
+  "id": "prompt_meds_morning",
+  "language": "en",
+  "variables": ["patient_name", "drug_name", "dose_time"],
+  "tone": "gentle",
+  "text": "{{patient_name}}, it is time for your {{dose_time}} medicine, {{drug_name}}. Please take it now if you have not already."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "alert_red",
+  "language": "en",
+  "variables": ["patient_name", "caregiver_name"],
+  "tone": "firm",
+  "text": "{{patient_name}}, I want you to call {{caregiver_name}} now. Please tell them how you are feeling."
+}

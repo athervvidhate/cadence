@@ -1,0 +1,7 @@
+{
+  "id": "prompt_weight",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "clear",
+  "text": "{{patient_name}}, please step on the scale now. Tell me the number you see when you are ready."
+}
