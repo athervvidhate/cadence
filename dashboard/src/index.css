@@ -7,7 +7,12 @@
   --ink: #1a1f1b;
   --ink-2: #3b413c;
   --ink-3: #6b716c;
+  --ink-4: #c8cdc9;
   --hairline: #e4dfd3;
+  --hairline-2: #ede9e0;
+  --accent: oklch(0.52 0.09 155);
+  --warn: oklch(0.65 0.13 75);
+  --danger: oklch(0.55 0.18 25);
   --accent-soft: oklch(0.94 0.04 155);
   --accent-ink: oklch(0.32 0.08 155);
   --warn-soft: oklch(0.95 0.06 75);
