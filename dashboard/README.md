@@ -9,7 +9,14 @@ A Cloudinary React + Vite + TypeScript project scaffolded with [create-cloudinar
 ## Quick Start
 
 ```bash
+npm install
 npm run dev
+```
+
+Run the backend in a separate terminal from the repo root:
+
+```bash
+npm start --prefix backend
 ```
 
 ## Cloudinary Setup
@@ -20,9 +27,20 @@ This project uses Cloudinary for image management. If you don't have a Cloudinar
 
 ## Environment Variables
 
-Your `.env` file has been pre-configured with:
-- `VITE_CLOUDINARY_CLOUD_NAME`: dfbyukedn
-- `VITE_CLOUDINARY_UPLOAD_PRESET`: (not set - add one for uploads)
+Create `dashboard/.env` from `dashboard/.env.example`:
+
+```bash
+VITE_API_BASE_URL=http://localhost:4000
+VITE_DEMO_PATIENT_ID=replace-with-mongodb-patient-id
+VITE_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=your_unsigned_upload_preset
+```
+
+`VITE_DEMO_PATIENT_ID` should be a real MongoDB patient `_id`. The dashboard calls:
+
+```text
+GET /api/patients/:id/dashboard
+```
 
 **Note**: Transformations work without an upload preset (using sample images). Uploads require an unsigned upload preset.
 

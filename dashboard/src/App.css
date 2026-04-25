@@ -230,7 +230,7 @@
   background: var(--hairline);
 }
 
-.warp-meter span:nth-child(-n + 4) {
+.warp-meter span.active {
   background: var(--accent-ink);
 }
 

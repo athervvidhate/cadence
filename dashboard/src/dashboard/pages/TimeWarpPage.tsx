@@ -1,23 +1,24 @@
+import { useDashboardData } from '../DashboardDataContext';
+
 export function TimeWarpPage() {
+  const { data } = useDashboardData();
+  const progress = Math.min(data?.currentDay ?? 0, 7);
+
   return (
     <section className="dc-card">
-      <h2>Time-warp demo control</h2>
-      <p>Replay days 1-7 in 60 seconds with the scripted day-4 red flag sequence from the PRD.</p>
+      <h2>Timeline control</h2>
+      <p>Current patient timeline is on day {data?.currentDay ?? '...'} of 30.</p>
       <div className="warp-meter" aria-hidden>
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
+        {Array.from({ length: 7 }, (_, index) => (
+          <span key={index} className={index < progress ? 'active' : ''} />
+        ))}
       </div>
       <div className="row gap-2">
         <button className="dc-btn dc-btn-ghost" type="button">
-          Reset
+          Review timeline
         </button>
         <button className="dc-btn dc-btn-primary" type="button">
-          Pause warp
+          Refresh status
         </button>
       </div>
     </section>

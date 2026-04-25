@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI
-from pydantic import BaseModel
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -22,14 +21,6 @@ care_plan_agent = CarePlanAgent()
 escalation_agent = EscalationAgent()
 
 
-class AgentPayload(BaseModel):
-    __root__: dict[str, Any]
-
-    @property
-    def value(self) -> dict[str, Any]:
-        return self.__root__
-
-
 @app.post("/agents/regimen/extract_regimen")
 def extract_regimen(payload: dict[str, Any]) -> dict[str, Any]:
     return regimen_agent.handle_extract_regimen(payload)
@@ -43,3 +34,9 @@ def build_plan(payload: dict[str, Any]) -> dict[str, Any]:
 @app.post("/agents/escalation/evaluate_log")
 def evaluate_log(payload: dict[str, Any]) -> dict[str, Any]:
     return escalation_agent.handle_evaluate_log(payload)
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8001)
