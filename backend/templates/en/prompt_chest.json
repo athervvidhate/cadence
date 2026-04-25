@@ -1,0 +1,7 @@
+{
+  "id": "prompt_chest",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "steady",
+  "text": "{{patient_name}}, are you having any chest pain or pressure right now? Please answer yes or no."
+}

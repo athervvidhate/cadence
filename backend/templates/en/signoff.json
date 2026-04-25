@@ -1,0 +1,7 @@
+{
+  "id": "signoff",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "warm",
+  "text": "Thanks, {{patient_name}}. Rest easy, and I will check in with you again at the next scheduled time."
+}

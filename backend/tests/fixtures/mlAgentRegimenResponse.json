@@ -1,0 +1,19 @@
+{
+  "patientId": "demo-patient-001",
+  "extractedAt": "2026-04-25T10:00:00Z",
+  "extractionPath": "gemma_fallback",
+  "extractionConfidence": 0.91,
+  "medications": [
+    {
+      "drugName": "Furosemide",
+      "rxNormCode": "4603",
+      "dose": "40 mg",
+      "frequency": "twice daily",
+      "schedule": ["08:00", "20:00"],
+      "instructions": "Take with food",
+      "duration": "ongoing",
+      "indication": "diuretic",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
