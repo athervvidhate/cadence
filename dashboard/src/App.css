@@ -234,6 +234,58 @@
   background: var(--accent-ink);
 }
 
+/* ── Layout utilities ── */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.gap-1 { gap: 4px; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.flex-1 { flex: 1; }
+.text-serif { font-family: var(--font-serif); }
+.text-mono  { font-family: var(--font-mono); }
+
+/* ── Component tokens ── */
+.dc-h-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.dc-soft-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+}
+
+.dc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  background: var(--hairline-2);
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.dc-pill .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.dc-pill.neutral {
+  background: var(--hairline-2);
+  color: var(--ink-3);
+}
+
 @media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
