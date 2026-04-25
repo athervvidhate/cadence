@@ -1,0 +1,7 @@
+{
+  "id": "missed_dose_nudge",
+  "language": "en",
+  "variables": ["patient_name", "drug_name", "dose_time"],
+  "tone": "gentle",
+  "text": "{{patient_name}}, it looks like your {{dose_time}} {{drug_name}} was not marked taken. Please check your pill box now."
+}

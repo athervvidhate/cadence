@@ -1,0 +1,7 @@
+{
+  "id": "alert_urgent",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "urgent",
+  "text": "{{patient_name}}, please call 911 or go to the ER now. Do not wait to get help."
+}
