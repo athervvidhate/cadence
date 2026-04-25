@@ -26,6 +26,10 @@ htmlcov/
 
 # Local outputs/artifacts
 ml_pipeline/out/
+voice-examples/
+*.mp3
+*.wav
+*.m4a
 *.log
 node_modules/
 backend/node_modules/

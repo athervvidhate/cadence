@@ -1,0 +1,7 @@
+{
+  "id": "prompt_meds_evening",
+  "language": "en",
+  "variables": ["patient_name", "drug_name", "dose_time"],
+  "tone": "gentle",
+  "text": "{{patient_name}}, this is your {{dose_time}} reminder for {{drug_name}}. Please take it with water if it is due."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "greeting_morning",
+  "language": "en",
+  "variables": ["patient_name", "day_number"],
+  "tone": "warm",
+  "text": "Good morning, {{patient_name}}. It is day {{day_number}} at home, and I am here to check in with you."
+}

@@ -16,6 +16,12 @@ const caregiverSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     email: { type: String, required: true },
     voiceId: { type: String, default: null },
+    voiceCloneStatus: {
+      type: String,
+      enum: ["not_started", "ready", "failed"],
+      default: "not_started",
+    },
+    voiceClonedAt: { type: Date, default: null },
     notificationPrefs: { type: notificationPrefsSchema, default: () => ({}) },
   },
   { _id: false }

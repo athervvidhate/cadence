@@ -1,0 +1,7 @@
+{
+  "id": "greeting_evening",
+  "language": "en",
+  "variables": ["patient_name", "day_number"],
+  "tone": "warm",
+  "text": "Good evening, {{patient_name}}. Day {{day_number}} is almost done, so let us do a calm check-in together."
+}

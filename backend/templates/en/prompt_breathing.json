@@ -1,0 +1,7 @@
+{
+  "id": "prompt_breathing",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "calm",
+  "text": "{{patient_name}}, how is your breathing today? Is it the same, better, or harder than yesterday?"
+}

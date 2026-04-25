@@ -11,7 +11,12 @@ const { extractRegimenController } = require("../controllers/regimenController")
 const { generateCarePlanController } = require("../controllers/carePlanController");
 const { createDailyLogController } = require("../controllers/dailyLogController");
 const { getDashboardController } = require("../controllers/dashboardController");
-const { synthesizeVoiceController } = require("../controllers/voiceController");
+const {
+  cloneVoiceController,
+  streamTemplateAudioController,
+  streamTextAudioController,
+  synthesizeVoiceController,
+} = require("../controllers/voiceController");
 
 const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
@@ -47,6 +52,16 @@ router.post(
 );
 
 router.get("/patients/:id/dashboard", asyncHandler(getDashboardController));
+
+router.get("/audio", asyncHandler(streamTextAudioController));
+
+router.post("/audio/template", asyncHandler(streamTemplateAudioController));
+
+router.post(
+  "/voice/clone",
+  upload.single("audio"),
+  asyncHandler(cloneVoiceController)
+);
 
 router.post(
   "/voice/synthesize",

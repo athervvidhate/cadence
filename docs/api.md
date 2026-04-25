@@ -7,8 +7,8 @@
 - Response: `{ "patientId": "...", "createdAt": "..." }`
 
 ### `POST /api/patients/:id/voice`
-- Multipart form upload (`audio`) and stores generated `voiceId`.
-- Response: `{ "voiceId": "...", "previewUrl": "..." }`
+- Multipart form upload (`audio`) to clone caregiver voice with ElevenLabs and store generated `voiceId`.
+- Response: `{ "voiceId": "...", "patientId": "..." }`
 
 ### `POST /api/regimens/extract`
 - Multipart form upload:
@@ -32,9 +32,26 @@
 - Dashboard aggregate endpoint.
 - Response includes patient profile, trend metrics, alert history, regimen snapshot.
 
+### `GET /api/audio`
+- Query params: `voiceId`, `text`, `language`.
+- Streams `audio/mpeg` from GridFS cache or ElevenLabs.
+
+### `POST /api/audio/template`
+- Request: `{ patientId?, voiceId?, templateId, language, vars }`
+- Requires either `patientId` or `voiceId`.
+- Renders a dialogue template, then streams `audio/mpeg` from GridFS cache or ElevenLabs.
+
+### `POST /api/voice/clone`
+- Multipart form upload:
+  - `patientId`
+  - `audio`
+- Clones caregiver voice with ElevenLabs and saves it on the patient caregiver profile.
+- Response: `{ "voiceId": "...", "patientId": "..." }`
+
 ### `POST /api/voice/synthesize`
-- Request: `{ patientId, text, language }`
-- Returns synthesized clip metadata.
+- Request: `{ patientId?, voiceId?, text, language }`
+- Requires either `patientId` or `voiceId`.
+- Streams `audio/mpeg` from GridFS cache or ElevenLabs.
 
 ## Agent Chat Protocol Over Shim
 

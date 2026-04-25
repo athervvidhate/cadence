@@ -8,7 +8,13 @@ async function createPatient(payload) {
 async function saveVoiceId(patientId, voiceId) {
   const patient = await Patient.findByIdAndUpdate(
     patientId,
-    { $set: { "caregiver.voiceId": voiceId } },
+    {
+      $set: {
+        "caregiver.voiceId": voiceId,
+        "caregiver.voiceCloneStatus": "ready",
+        "caregiver.voiceClonedAt": new Date(),
+      },
+    },
     { new: true }
   );
   if (!patient) {

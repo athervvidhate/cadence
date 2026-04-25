@@ -4,7 +4,7 @@
 - Patient identity + baseline:
   - `patientName`, `preferredName`, `ageYears`, `language`, `diagnosis`, `baselineWeightLbs`, `dischargeDate`.
 - Embedded caregiver:
-  - `name`, `relationship`, `phone`, `email`, `voiceId`, `notificationPrefs`.
+  - `name`, `relationship`, `phone`, `email`, `voiceId`, `voiceCloneStatus`, `voiceClonedAt`, `notificationPrefs`.
 - Demo controls:
   - `demoMode`.
 
