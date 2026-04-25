@@ -1,1 +1,1 @@
-"""DischargeCoach ML pipeline package."""
+"""Cadence ML pipeline package."""

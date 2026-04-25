@@ -72,7 +72,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--model-id",
-        default=os.getenv("ZETIC_MODEL_ID", "dischargecoach-regimen-v1"),
+        default=os.getenv("ZETIC_MODEL_ID", "cadence-regimen-v1"),
         help="On-device Melange model identifier.",
     )
     parser.add_argument("--output", type=Path, help="Optional output path for final JSON.")
