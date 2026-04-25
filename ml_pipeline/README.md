@@ -40,8 +40,11 @@ python ml_pipeline/extract_regimen_gemma.py \
   --image "/path/to/discharge_page_2.jpg" \
   --patient-id "demo-patient-001" \
   --pretty \
-  --output "ml_pipeline/out/regimen_demo.json"
+  --output "regimen_demo.json"
 ```
+
+Each extraction run is written to a unique folder under `ml_pipeline/out/extractions/`
+to prevent overwriting previous runs.
 
 ### Test Gemma without images (using synthetic text)
 
@@ -53,7 +56,7 @@ python ml_pipeline/extract_regimen_gemma.py \
   --dataset-path "ml_pipeline/data/chf_synthetic_discharge_summaries_v1.json" \
   --patient-id "test-patient-001" \
   --pretty \
-  --output "ml_pipeline/out/regimen_from_synthetic_text.json"
+  --output "regimen_from_synthetic_text.json"
 ```
 
 ## Run on-device contract wrapper (ZETIC)

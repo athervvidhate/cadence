@@ -5,7 +5,7 @@ Usage:
   python ml_pipeline/extract_regimen_gemma.py \
     --image ./page1.jpg --image ./page2.jpg \
     --patient-id demo-patient-001 \
-    --output ./regimen.json
+    --output regimen.json
 
 Environment:
   GOOGLE_API_KEY=<google ai studio key>
@@ -169,12 +169,24 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        help="Optional output file path. If omitted, prints JSON to stdout.",
+        help=(
+            "Optional output filename (for example: regimen.json). "
+            "File is written inside a unique per-run folder."
+        ),
+    )
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        default=Path("ml_pipeline/out/extractions"),
+        help="Base folder where unique extraction run folders are created.",
     )
     parser.add_argument(
         "--raw-output",
         type=Path,
-        help="Optional path to write raw model text for debugging.",
+        help=(
+            "Optional raw output filename (for example: raw_response.txt). "
+            "File is written inside the same unique per-run folder."
+        ),
     )
     parser.add_argument(
         "--pretty",
@@ -398,6 +410,54 @@ def build_text_context(args: argparse.Namespace) -> str:
     return "\n\n".join(chunk.strip() for chunk in chunks if chunk.strip())
 
 
+def _slugify(value: str) -> str:
+    slug = re.sub(r"[^A-Za-z0-9_-]+", "-", value.strip())
+    slug = re.sub(r"-{2,}", "-", slug).strip("-_")
+    return slug or "run"
+
+
+def _run_label(args: argparse.Namespace, image_paths: list[Path]) -> str:
+    if image_paths:
+        first_stem = _slugify(image_paths[0].stem)
+        return f"{first_stem}_{len(image_paths)}p"
+    if args.synthetic_doc_id:
+        return _slugify(args.synthetic_doc_id)
+    if args.text_file:
+        return _slugify(args.text_file.expanduser().resolve().stem)
+    return "input"
+
+
+def _json_filename(value: Path | None, default_name: str) -> str:
+    if value is None:
+        return default_name
+    name = value.name.strip()
+    if not name:
+        return default_name
+    if not name.lower().endswith(".json"):
+        return f"{name}.json"
+    return name
+
+
+def _raw_filename(value: Path | None, default_name: str) -> str:
+    if value is None:
+        return default_name
+    name = value.name.strip()
+    return name or default_name
+
+
+def resolve_run_output_paths(
+    args: argparse.Namespace, image_paths: list[Path]
+) -> tuple[Path, Path, Path]:
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ")
+    label = _run_label(args, image_paths)
+    run_dir = args.output_root.expanduser().resolve() / f"{label}_{timestamp}"
+    run_dir.mkdir(parents=True, exist_ok=False)
+
+    regimen_path = run_dir / _json_filename(args.output, "regimen.json")
+    raw_path = run_dir / _raw_filename(args.raw_output, "raw_model_response.txt")
+    return run_dir, regimen_path, raw_path
+
+
 def call_gemma_json(
     client: genai.Client,
     model: str,
@@ -474,6 +534,7 @@ def main() -> None:
     image_paths = [Path(p).expanduser().resolve() for p in args.images]
     image_parts = load_image_parts(image_paths) if image_paths else []
     text_context = build_text_context(args)
+    run_dir, regimen_output_path, raw_output_path = resolve_run_output_paths(args, image_paths)
     client = genai.Client(api_key=api_key)
 
     feedback = ""
@@ -508,8 +569,7 @@ def main() -> None:
         feedback = format_validation_feedback(issues)
 
     if args.raw_output:
-        args.raw_output.parent.mkdir(parents=True, exist_ok=True)
-        args.raw_output.write_text(last_raw, encoding="utf-8")
+        raw_output_path.write_text(last_raw, encoding="utf-8")
 
     if normalized_payload is None or last_issues:
         issue_text = "\n".join(f"- {issue.to_text()}" for issue in last_issues) or "- unknown issue"
@@ -517,10 +577,13 @@ def main() -> None:
 
     regimen = build_regimen_envelope(args.patient_id, normalized_payload)
     output_text = json.dumps(regimen, indent=2 if args.pretty else None, ensure_ascii=False)
+    regimen_output_path.write_text(output_text + "\n", encoding="utf-8")
 
     if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(output_text + "\n", encoding="utf-8")
+        print(f"Saved regimen JSON to {regimen_output_path}")
+        if args.raw_output:
+            print(f"Saved raw model output to {raw_output_path}")
+        print(f"Run folder: {run_dir}")
     else:
         print(output_text)
 
