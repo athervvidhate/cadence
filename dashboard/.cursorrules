@@ -872,3 +872,68 @@ When something isn't working, check:
 - [ ] Upload result types are defined (not using `any`)
 - [ ] Environment variables are typed in `vite-env.d.ts`
 - [ ] Refs are properly typed with HTML element types
+
+
+
+### Code Base Rules
+
+# DischargeCoach: Caregiver Dashboard AI Context
+
+## Project Overview
+[cite_start]You are assisting with the `/dashboard` component of DischargeCoach, a 24-hour hackathon build for LA Hacks 2026[cite: 5, 851]. [cite_start]This is a voice-led 30-day post-discharge companion app for Congestive Heart Failure (CHF) patients[cite: 18, 852]. 
+
+[cite_start]The system architecture splits sensitive data to the mobile device (React Native) and relies on an Express gateway communicating with Fetch.ai agents for orchestration[cite: 287, 316]. [cite_start]This dashboard ONLY reads de-identified structured state via the Express API[cite: 288, 319].
+
+## Role & Ownership
+[cite_start]We are executing **Role 4 - Voice/UX Engineer**[cite: 747].
+* [cite_start]**Primary Responsibility:** Build the Caregiver web dashboard (responsive web view)[cite: 254, 751].
+* [cite_start]**Goal:** Pixel-polished UI that provides at-a-glance status (Green/Yellow/Red) so the caregiver doesn't need to read text to know if they should worry[cite: 98, 760].
+
+## Tech Stack & Tooling
+* [cite_start]**Framework:** React 18 using the Cloudinary React AI Starter Kit[cite: 254, 958, 964].
+* [cite_start]**Hosting/Deployment:** Vercel[cite: 338].
+* [cite_start]**Charting:** Recharts (specifically for the weight sparkline)[cite: 964].
+* [cite_start]**Animations:** Framer Motion (specifically to animate the status pill on alerts)[cite: 971].
+
+## Strict Scope & Constraints (Hackathon Rules)
+* [cite_start]**NO AUTHENTICATION:** Do not build a login screen[cite: 964]. [cite_start]Hardcode a single demo user (`caregiver@demo.com/demo`)[cite: 258]. [cite_start]The patient ID will be hardcoded in the URL[cite: 964].
+* [cite_start]**UI DISCIPLINE:** Do not design a logo[cite: 762]. [cite_start]Do not add charts that are not on the demo script[cite: 763]. [cite_start]Do not make the dashboard 'pretty' before it is functionally correct[cite: 764].
+* [cite_start]**DEADLINES:** * Hour 6: Layout in place[cite: 758].
+    * [cite_start]Hour 14: Rendering live data from the API.
+    * [cite_start]Hour 18: Pixel-polished, weight chart works, status pill animates[cite: 760].
+
+## UI Layout Specifications
+[cite_start]The dashboard is divided into three vertical sections[cite: 254]:
+1.  [cite_start]**TOP:** Today's status pill (green/yellow/red), patient name, day count (e.g., 'Day 4 of 30')[cite: 256, 961].
+2.  [cite_start]**MIDDLE:** Weight trend sparkline (last 7 days), adherence percentage, today's symptom summary[cite: 257, 961].
+3.  [cite_start]**BOTTOM:** Alert history (collapsible), upcoming appointments, regimen summary[cite: 257, 961].
+
+## API Contract
+[cite_start]All data is fetched from a single endpoint[cite: 597].
+
+[cite_start]**Endpoint:** `GET /api/patients/:id/dashboard` [cite: 596]
+**Response (200 OK):**
+```json
+{
+  "patient": { /* patient schema */ },
+  "currentDay": 4,
+  "todayStatus": "red",
+  "weightTrend": [
+    { "date": "2026-04-26", "weightLbs": 184 },
+    { "date": "2026-04-27", "weightLbs": 184 },
+    { "date": "2026-04-28", "weightLbs": 185 },
+    { "date": "2026-04-29", "weightLbs": 187 }
+  ],
+  "adherence7d": 0.94,
+  "todaySymptoms": {
+    "shortnessOfBreath": "exertion",
+    "swelling": "mild",
+    "chestPain": "none",
+    "fatigue": "moderate"
+  },
+  "alertHistory": [ /* alerts collection items */ ],
+  "upcomingAppointments": [
+    { "type": "cardiology", "daysFromDischarge": 7 }
+  ],
+  "regimen": [ /* abridged medications list */ ]
+}

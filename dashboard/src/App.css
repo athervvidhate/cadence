@@ -1,165 +1,245 @@
-.app {
+.dc-dash {
   min-height: 100vh;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 250px 1fr;
 }
 
-.main-content {
+.dc-dash-side {
+  background: var(--bg-elev);
+  border-right: 1px solid var(--hairline);
+  padding: 20px 14px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 10px;
+}
+
+.dc-dash-main {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.brand-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--ink);
+  color: var(--bg-elev);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.logo {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.patient-card {
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+}
+
+.patient-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dc-nav-item {
+  display: block;
+  text-decoration: none;
+  color: var(--ink-2);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.dc-nav-item.active {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.side-nav {
+  display: grid;
+  gap: 4px;
+}
+
+.grow {
+  flex: 1;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-h1 {
-  font-size: 2.5rem;
+.breadcrumbs {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+}
+
+.hero h1 {
+  margin: 10px 0 8px;
+  font-family: var(--font-serif);
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.hero p {
   margin: 0;
-  text-align: center;
+  color: var(--ink-3);
 }
 
-h2 {
-  font-size: 1.5rem;
-  margin: 0 0 1rem 0;
+.subtle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ink-3);
 }
 
-.upload-section,
-.image-section {
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.dc-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(26, 31, 27, 0.03);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.value {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+.sub {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.kpi-card {
+  min-height: 122px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+}
+
+.chart-wrap {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 1rem;
+  height: 220px;
 }
 
-.display-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.chart-card h3 {
+  margin: 0 0 10px;
 }
 
-.image-info {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: monospace;
-}
-
-.ai-prompts-section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  background: rgba(99, 102, 241, 0.1);
-  border-radius: 1rem;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-}
-
-.prompts-intro {
-  margin: 0.5rem 0 1rem 0;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: center;
-  font-size: 1rem;
-}
-
-.prompts-intro strong {
-  color: rgba(99, 102, 241, 1);
-}
-
-.prompts-list {
-  list-style: none;
-  padding: 0;
+.simple-list {
+  padding-left: 16px;
   margin: 0;
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  gap: 8px;
 }
 
-.prompts-list li {
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.5rem;
-  border-left: 3px solid rgba(99, 102, 241, 0.5);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  user-select: text;
+.dc-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
-  position: relative;
 }
 
-.prompts-list li:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-left-color: rgba(99, 102, 241, 0.8);
-  transform: translateX(4px);
+.dc-btn-primary {
+  background: var(--ink);
+  color: var(--bg);
 }
 
-@keyframes wipe-in-out {
-  0% {
-    clip-path: polygon(
-      0% 0%,
-      0% 100%, 
-      0% 100%,
-      0% 0%
-    );
-  }
-  15% {
-    clip-path: polygon(
-      0% 0%,
-      0% 100%, 
-      100% 100%,
-      100% 0%
-    );
-  }
-  85% {
-    clip-path: polygon(
-      0% 0%,
-      0% 100%, 
-      100% 100%,
-      100% 0%
-    );
-  }
-  100% {
-    clip-path: polygon(
-      100% 0%,
-      100% 100%, 
-      100% 100%,
-      100% 0%
-    );
-  }
+.dc-btn-ghost {
+  border: 1px solid var(--hairline);
+  color: var(--ink-2);
+  background: var(--surface);
 }
 
-.prompts-list li::after {
-  content: '✓ copied';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: green;
-  border-radius: 0.5rem;
-  visibility: hidden;
-  padding-top: 0.75em;
-  padding-left: 1em;
-  
-  /* without this it sometimes glitched at the end? */
-  clip-path: polygon(
-    0% 0%,
-    0% 100%, 
-    0% 100%,
-    0% 0%
-  );
-
+.dc-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 12px;
+  padding: 5px 10px;
+  font-weight: 500;
 }
 
-.prompts-list li.clicked::after {
-  visibility: visible;
-  animation-duration: 1.5s;
-  animation-name: wipe-in-out;
+.dc-pill.green {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.dc-pill.yellow {
+  background: var(--warn-soft);
+  color: var(--warn-ink);
+}
+
+.dc-pill.red {
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+}
+
+.warp-meter {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.warp-meter span {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--hairline);
+}
+
+.warp-meter span:nth-child(-n + 4) {
+  background: var(--accent-ink);
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .two-col {
+    grid-template-columns: 1fr;
+  }
 }

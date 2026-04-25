@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DischargeCoach · Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body, #root { height: 100%; }
+  body { background: #f0eee9; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="screens-onboarding.jsx"></script>
+<script type="text/babel" src="screens-voice-patient.jsx"></script>
+<script type="text/babel" src="screens-dashboard.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const PHONE_W = 320;
+const PHONE_H = 680;
+
+// Wrap a phone screen (our React tree) inside the iOS device chrome.
+const Phone = ({ children, dark = false, label }) => (
+  <div data-screen-label={label} style={{ position: 'relative' }}>
+    <IOSDevice width={PHONE_W} height={PHONE_H} dark={dark}>
+      <div style={{ position: 'absolute', inset: 0, paddingTop: 54 }}>
+        <div style={{ width: '100%', height: '100%' }}>{children}</div>
+      </div>
+    </IOSDevice>
+  </div>
+);
+
+const DesktopFrame = ({ children, label }) => (
+  <div data-screen-label={label} style={{
+    width: 1180, height: 740, borderRadius: 14,
+    overflow: 'hidden', background: 'var(--bg)',
+    boxShadow: '0 40px 80px rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08)',
+    border: '1px solid rgba(0,0,0,0.06)'
+  }}>
+    {/* faux browser chrome */}
+    <div style={{ height: 36, background: '#EFEAE0', borderBottom: '1px solid var(--hairline)', display: 'flex', alignItems: 'center', padding: '0 14px', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 6 }}>
+        <div style={{ width: 11, height: 11, borderRadius: 6, background: '#E6766B' }}/>
+        <div style={{ width: 11, height: 11, borderRadius: 6, background: '#E5C16C' }}/>
+        <div style={{ width: 11, height: 11, borderRadius: 6, background: '#9BC59B' }}/>
+      </div>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+        <div style={{
+          background: 'rgba(255,255,255,0.7)', border: '1px solid var(--hairline)',
+          padding: '4px 16px', borderRadius: 6, fontSize: 11.5, color: 'var(--ink-3)',
+          fontFamily: 'var(--font-mono)', minWidth: 320, textAlign: 'center'
+        }}>care.dischargecoach.app/robert-chen</div>
+      </div>
+      <div style={{ width: 60 }}/>
+    </div>
+    <div style={{ width: '100%', height: 'calc(100% - 36px)' }}>{children}</div>
+  </div>
+);
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="hero" title="DischargeCoach" subtitle="Voice-led recovery for the 30 days that matter most. CHF discharge → home → no readmission.">
+        <DCArtboard id="cover" label="Overview" width={920} height={520}>
+          <div style={{ width: '100%', height: '100%', background: 'var(--bg)', padding: '52px 56px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div className="row gap-2" style={{ alignItems: 'center' }}>
+                <div style={{ width: 30, height: 30, borderRadius: 9, background: 'var(--ink)', color: 'var(--bg)', display: 'grid', placeItems: 'center' }}>
+                  <IconHeart size={16} />
+                </div>
+                <span style={{ fontSize: 16, fontWeight: 500, letterSpacing: '-0.01em' }}>DischargeCoach</span>
+              </div>
+              <span className="dc-tag">v1.0 · LA Hacks 2026</span>
+            </div>
+            <div>
+              <span className="dc-h-eyebrow">Mockups · 14 screens</span>
+              <h1 className="text-serif" style={{ fontSize: 78, lineHeight: 0.95, margin: '14px 0 0', letterSpacing: '-0.02em', maxWidth: 800 }}>
+                The next 30 days,<br/><em style={{ fontStyle: 'italic', color: 'var(--accent-ink)' }}>handled together</em>.
+              </h1>
+              <p style={{ marginTop: 18, fontSize: 17, color: 'var(--ink-2)', maxWidth: 620, lineHeight: 1.5 }}>
+                A mobile companion that turns hospital discharge paperwork into a daily voice-led care plan — in a cloned family voice — and routes red flags to caregivers before they become ER visits.
+              </p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+              {[
+                { l: 'Caregiver onboarding', v: '8 screens' },
+                { l: 'Patient check-in', v: '3 screens' },
+                { l: 'Caregiver web dashboard', v: '3 screens' },
+                { l: 'States covered', v: 'green · yellow · red' },
+              ].map((s, i) => (
+                <div key={i} style={{ borderTop: '1px solid var(--hairline)', paddingTop: 12 }}>
+                  <div className="dc-h-eyebrow">{s.l}</div>
+                  <div className="text-serif" style={{ fontSize: 22, marginTop: 4 }}>{s.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="onboarding" title="Caregiver onboarding" subtitle="The daughter sets up her dad's plan in under five minutes. From paperwork to a cloned voice.">
+        <DCArtboard id="welcome" label="01 · Welcome" width={PHONE_W} height={PHONE_H}>
+          <Phone label="01 Welcome"><ScreenWelcome /></Phone>
+        </DCArtboard>
+        <DCArtboard id="profile" label="02 · Patient profile" width={PHONE_W} height={PHONE_H}>
+          <Phone label="02 Profile"><ScreenProfile /></Phone>
+        </DCArtboard>
+        <DCArtboard id="discharge" label="03 · Capture paperwork" width={PHONE_W} height={PHONE_H}>
+          <Phone dark label="03 Discharge"><ScreenDischargeCapture /></Phone>
+        </DCArtboard>
+        <DCArtboard id="bottle" label="04 · Scan medication" width={PHONE_W} height={PHONE_H}>
+          <Phone dark label="04 Bottles"><ScreenBottleScan /></Phone>
+        </DCArtboard>
+        <DCArtboard id="regimen" label="05 · Review regimen" width={PHONE_W} height={PHONE_H}>
+          <Phone label="05 Regimen"><ScreenRegimen /></Phone>
+        </DCArtboard>
+        <DCArtboard id="voice-record" label="06 · Record voice" width={PHONE_W} height={PHONE_H}>
+          <Phone label="06 Voice record"><ScreenVoiceRecord /></Phone>
+        </DCArtboard>
+        <DCArtboard id="voice-confirm" label="07 · Confirm clone" width={PHONE_W} height={PHONE_H}>
+          <Phone label="07 Voice confirm"><ScreenVoiceConfirm /></Phone>
+        </DCArtboard>
+        <DCArtboard id="ready" label="08 · Plan ready" width={PHONE_W} height={PHONE_H}>
+          <Phone label="08 Plan ready"><ScreenPlanReady /></Phone>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="patient" title="Patient · daily check-in" subtitle="Mr. Chen never taps a button. Big type, calm dark UI, his daughter's voice on every check-in.">
+        <DCArtboard id="incoming" label="09 · Incoming" width={PHONE_W} height={PHONE_H}>
+          <Phone dark label="09 Incoming"><ScreenPatientIncoming /></Phone>
+        </DCArtboard>
+        <DCArtboard id="checkin" label="10 · In conversation" width={PHONE_W} height={PHONE_H}>
+          <Phone dark label="10 Conversation"><ScreenPatientCheckIn /></Phone>
+        </DCArtboard>
+        <DCArtboard id="complete" label="11 · Complete · soft flag" width={PHONE_W} height={PHONE_H}>
+          <Phone dark label="11 Complete"><ScreenPatientComplete /></Phone>
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="dash" title="Caregiver web dashboard" subtitle="Sarah's view from her work laptop. Three states · green, yellow, red. Same layout, instantly readable.">
+        <DCArtboard id="dash-green" label="12a · Stable (green)" width={1180} height={740}>
+          <DesktopFrame label="12 Dashboard green"><DashboardCommon level="green" /></DesktopFrame>
+        </DCArtboard>
+        <DCArtboard id="dash-yellow" label="12b · Watch (yellow)" width={1180} height={740}>
+          <DesktopFrame label="12 Dashboard yellow"><DashboardCommon level="yellow" /></DesktopFrame>
+        </DCArtboard>
+        <DCArtboard id="dash-red" label="12c · Action needed (red)" width={1180} height={740}>
+          <DesktopFrame label="12 Dashboard red"><DashboardCommon level="red" /></DesktopFrame>
+        </DCArtboard>
+        <DCArtboard id="alert" label="13 · Alert detail" width={1180} height={740}>
+          <DesktopFrame label="13 Alert"><ScreenAlertDetail /></DesktopFrame>
+        </DCArtboard>
+        <DCArtboard id="warp" label="14 · Time-warp demo" width={1180} height={740}>
+          <DesktopFrame label="14 Time warp"><ScreenTimeWarp /></DesktopFrame>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
