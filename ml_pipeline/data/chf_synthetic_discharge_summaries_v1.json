@@ -1,0 +1,1389 @@
+{
+  "datasetVersion": "v1.0",
+  "description": "Synthetic CHF discharge summaries for regimen extraction benchmarking. Includes 10 documents (8 English, 2 Spanish) with ground-truth medications using the regimens.medications schema.",
+  "documents": [
+    {
+      "id": "chf_en_001",
+      "language": "en",
+      "hospitalFormat": "Pasadena Community Hospital - After Visit Summary",
+      "complexity": "simple",
+      "medicationCount": 5,
+      "dischargeSummaryLines": [
+        "PASADENA COMMUNITY HOSPITAL",
+        "After-Visit Summary (CHF Discharge)",
+        "Patient: Harold Nguyen    MRN: SYN-1001",
+        "Discharge Date: 2026-04-24",
+        "Primary Diagnosis: Acute on chronic systolic congestive heart failure",
+        "",
+        "DISCHARGE MEDICATIONS (TAKE AS DIRECTED):",
+        "1. Furosemide 40 mg tablet - Take 1 tablet by mouth twice daily at 8:00 AM and 8:00 PM. Take with food.",
+        "2. Lisinopril 10 mg tablet - Take 1 tablet by mouth once daily at 8:00 AM.",
+        "3. Metoprolol Succinate ER 50 mg tablet - Take 1 tablet by mouth once daily at 8:00 AM. Do not crush.",
+        "4. Spironolactone 25 mg tablet - Take 1 tablet by mouth once daily at 8:00 AM.",
+        "5. Potassium Chloride ER 20 mEq tablet - Take 1 tablet by mouth once daily at 8:00 AM with breakfast.",
+        "",
+        "Self-care instructions: daily morning weight, low sodium diet (<2 g/day), fluid restriction 1.5 L/day."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Furosemide",
+            "rxNormCode": "4603",
+            "dose": "40 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "diuretic for fluid overload",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Lisinopril",
+            "rxNormCode": "29046",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "ACE inhibitor for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Metoprolol Succinate",
+            "rxNormCode": "866514",
+            "dose": "50 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Extended-release tablet; do not crush",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Spironolactone",
+            "rxNormCode": "9997",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "aldosterone antagonist for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "20 mEq",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with breakfast",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_002",
+      "language": "en",
+      "hospitalFormat": "Cedars-Sinai Medical Center - Advanced Heart Failure Reconciliation",
+      "complexity": "complex",
+      "medicationCount": 12,
+      "dischargeSummaryLines": [
+        "CEDARS-SINAI MEDICAL CENTER",
+        "Advanced Heart Failure Service - Discharge Medication Reconciliation",
+        "Patient: Robert Ellis    MRN: SYN-2044",
+        "Admit: 2026-04-19    Discharge: 2026-04-24",
+        "Final Diagnosis: Acute decompensated HFrEF, stage C",
+        "",
+        "ACTIVE MEDICATION LIST (START/CONTINUE):",
+        "A. Sacubitril/Valsartan (Entresto) 49/51 mg tab - 1 tab PO BID (0900, 2100). HOLD if SBP <100.",
+        "B. Torsemide 40 mg tab - 1 tab PO qAM (0800).",
+        "C. Carvedilol 12.5 mg tab - 1 tab PO BID with meals (0900, 2100).",
+        "D. Empagliflozin 10 mg tab - 1 tab PO daily (0800).",
+        "E. Eplerenone 25 mg tab - 1 tab PO daily (0800).",
+        "F. Hydralazine 25 mg tab - 1 tab PO TID (0800, 1400, 2000).",
+        "G. Isosorbide Mononitrate ER 30 mg tab - 1 tab PO daily (0800).",
+        "H. Digoxin 0.125 mg tab - 1 tab PO daily (0800). Hold for HR <60.",
+        "I. Potassium Chloride ER 20 mEq tab - 1 tab PO daily (0800).",
+        "J. Apixaban 5 mg tab - 1 tab PO BID (0900, 2100).",
+        "K. Atorvastatin 40 mg tab - 1 tab PO qHS (2000).",
+        "L. Pantoprazole 40 mg tab - 1 tab PO daily, 30 min before breakfast (0730).",
+        "",
+        "DISCONTINUE HOME MEDS: Lisinopril 10 mg daily; Metoprolol tartrate 25 mg BID; Ibuprofen 400 mg PRN."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Sacubitril/Valsartan",
+            "rxNormCode": "1656341",
+            "dose": "49/51 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Hold if systolic blood pressure <100 mmHg",
+            "duration": "ongoing",
+            "indication": "ARNI for HFrEF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Torsemide",
+            "rxNormCode": "38413",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "loop diuretic for fluid management",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Carvedilol",
+            "rxNormCode": "20352",
+            "dose": "12.5 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Take with meals",
+            "duration": "ongoing",
+            "indication": "beta blocker for HFrEF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Empagliflozin",
+            "rxNormCode": "1545653",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Eplerenone",
+            "rxNormCode": "298869",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "mineralocorticoid receptor antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Hydralazine",
+            "rxNormCode": "5470",
+            "dose": "25 mg",
+            "frequency": "three times daily",
+            "schedule": [
+              "08:00",
+              "14:00",
+              "20:00"
+            ],
+            "instructions": "Space doses evenly while awake",
+            "duration": "ongoing",
+            "indication": "afterload reduction",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Isosorbide Mononitrate",
+            "rxNormCode": "74498",
+            "dose": "30 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Extended-release; do not crush",
+            "duration": "ongoing",
+            "indication": "vasodilator therapy",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Digoxin",
+            "rxNormCode": "3407",
+            "dose": "0.125 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Hold if heart rate <60 bpm",
+            "duration": "ongoing",
+            "indication": "rate and symptom control",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "20 mEq",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Apixaban",
+            "rxNormCode": "1364430",
+            "dose": "5 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Do not skip doses",
+            "duration": "ongoing",
+            "indication": "anticoagulation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Atorvastatin",
+            "rxNormCode": "83367",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "20:00"
+            ],
+            "instructions": "Take nightly",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Pantoprazole",
+            "rxNormCode": "40790",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "07:30"
+            ],
+            "instructions": "Take 30 minutes before breakfast",
+            "duration": "ongoing",
+            "indication": "GI prophylaxis",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_003",
+      "language": "en",
+      "hospitalFormat": "Kaiser Permanente - CHF Medication List",
+      "complexity": "simple",
+      "medicationCount": 6,
+      "dischargeSummaryLines": [
+        "KAISER PERMANENTE LOS ANGELES MEDICAL CENTER",
+        "Discharge Instructions - Congestive Heart Failure",
+        "Patient: Eleanor Park    MRN: SYN-3108",
+        "Discharge Date: 2026-04-23",
+        "",
+        "YOUR DAILY HEART FAILURE MEDICINES:",
+        "- Bumetanide 1 mg tablet: Take 1 tablet at 7:00 AM and 1 tablet at 7:00 PM.",
+        "- Losartan 25 mg tablet: Take 1 tablet at 8:00 AM.",
+        "- Metoprolol Succinate ER 25 mg tablet: Take 1 tablet at 8:00 AM.",
+        "- Dapagliflozin 10 mg tablet: Take 1 tablet at 8:00 AM.",
+        "- Aspirin 81 mg chewable: Take 1 tablet at 8:00 AM with food.",
+        "- Atorvastatin 20 mg tablet: Take 1 tablet at 9:00 PM.",
+        "",
+        "STOP: Hydrochlorothiazide 25 mg daily.",
+        "Diet: less than 2 grams sodium daily. Weigh every morning."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Bumetanide",
+            "rxNormCode": "197378",
+            "dose": "1 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "07:00",
+              "19:00"
+            ],
+            "instructions": "Take morning and evening doses",
+            "duration": "ongoing",
+            "indication": "loop diuretic for edema",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Losartan",
+            "rxNormCode": "52175",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "ARB for CHF and blood pressure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Metoprolol Succinate",
+            "rxNormCode": "866514",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Extended-release tablet; do not crush",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Dapagliflozin",
+            "rxNormCode": "1488564",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Aspirin",
+            "rxNormCode": "1191",
+            "dose": "81 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "antiplatelet therapy",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Atorvastatin",
+            "rxNormCode": "83367",
+            "dose": "20 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "21:00"
+            ],
+            "instructions": "Take at bedtime",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_004",
+      "language": "en",
+      "hospitalFormat": "UCLA Health - Medication Reconciliation Form",
+      "complexity": "moderate",
+      "medicationCount": 8,
+      "dischargeSummaryLines": [
+        "UCLA HEALTH SANTA MONICA MEDICAL CENTER",
+        "Medication Reconciliation at Discharge",
+        "Patient: Juanita Brooks    MRN: SYN-4420",
+        "Discharge Date: 2026-04-25",
+        "Diagnosis: Acute on chronic CHF exacerbation",
+        "",
+        "Continue these medications:",
+        "1) Furosemide 80 mg PO every morning at 08:00.",
+        "2) Sacubitril/Valsartan 24/26 mg PO twice daily at 09:00 and 21:00.",
+        "3) Metoprolol Succinate ER 100 mg PO daily at 08:00.",
+        "4) Spironolactone 25 mg PO daily at 08:00.",
+        "5) Empagliflozin 10 mg PO daily at 08:00.",
+        "6) Potassium Chloride ER 10 mEq PO daily at 08:00 with breakfast.",
+        "7) Clopidogrel 75 mg PO daily at 08:00.",
+        "8) Rosuvastatin 20 mg PO nightly at 20:00.",
+        "",
+        "Patient counseling: monitor dizziness, check blood pressure, low sodium diet."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Furosemide",
+            "rxNormCode": "4603",
+            "dose": "80 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "diuretic for fluid overload",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Sacubitril/Valsartan",
+            "rxNormCode": "1656341",
+            "dose": "24/26 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Take morning and evening",
+            "duration": "ongoing",
+            "indication": "ARNI for HFrEF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Metoprolol Succinate",
+            "rxNormCode": "866514",
+            "dose": "100 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Extended-release tablet; do not crush",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Spironolactone",
+            "rxNormCode": "9997",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "aldosterone antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Empagliflozin",
+            "rxNormCode": "1545653",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "10 mEq",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with breakfast",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Clopidogrel",
+            "rxNormCode": "32968",
+            "dose": "75 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take once every day",
+            "duration": "ongoing",
+            "indication": "antiplatelet therapy",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Rosuvastatin",
+            "rxNormCode": "301542",
+            "dose": "20 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "20:00"
+            ],
+            "instructions": "Take at night",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_005",
+      "language": "en",
+      "hospitalFormat": "Providence Cardiology Unit - CHF Discharge Orders",
+      "complexity": "moderate",
+      "medicationCount": 9,
+      "dischargeSummaryLines": [
+        "PROVIDENCE SAINT JOSEPH MEDICAL CENTER",
+        "CHF Discharge Orders",
+        "Patient: Gregory Mills    MRN: SYN-5533",
+        "Discharge Date: 2026-04-22",
+        "",
+        "Medication Plan (home):",
+        "- Torsemide 20 mg: 1 tab PO at 08:00 and 18:00.",
+        "- Lisinopril 5 mg: 1 tab PO at 08:00.",
+        "- Carvedilol 25 mg: 1 tab PO at 08:00 and 20:00 with meals.",
+        "- Spironolactone 25 mg: 1 tab PO daily at 08:00.",
+        "- Digoxin 0.125 mg: 1 tab PO daily at 08:00. Hold for HR <60.",
+        "- Warfarin 3 mg: 1 tab PO every evening at 18:00.",
+        "- Potassium Chloride ER 20 mEq: 1 tab PO daily at 08:00 with food.",
+        "- Pantoprazole 40 mg: 1 tab PO daily at 07:30, 30 min before breakfast.",
+        "- Atorvastatin 40 mg: 1 tab PO nightly at 20:00.",
+        "",
+        "Anticoagulation clinic to monitor INR. Avoid NSAIDs."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Torsemide",
+            "rxNormCode": "38413",
+            "dose": "20 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "18:00"
+            ],
+            "instructions": "Take morning and early evening",
+            "duration": "ongoing",
+            "indication": "loop diuretic for edema",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Lisinopril",
+            "rxNormCode": "29046",
+            "dose": "5 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "ACE inhibitor for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Carvedilol",
+            "rxNormCode": "20352",
+            "dose": "25 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take with meals",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Spironolactone",
+            "rxNormCode": "9997",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "aldosterone antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Digoxin",
+            "rxNormCode": "3407",
+            "dose": "0.125 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Hold if heart rate <60 bpm",
+            "duration": "ongoing",
+            "indication": "symptom and rate control",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Warfarin",
+            "rxNormCode": "11289",
+            "dose": "3 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "18:00"
+            ],
+            "instructions": "Take in the evening; INR monitoring required",
+            "duration": "ongoing",
+            "indication": "anticoagulation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "20 mEq",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Pantoprazole",
+            "rxNormCode": "40790",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "07:30"
+            ],
+            "instructions": "Take 30 minutes before breakfast",
+            "duration": "ongoing",
+            "indication": "GI prophylaxis",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Atorvastatin",
+            "rxNormCode": "83367",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "20:00"
+            ],
+            "instructions": "Take nightly",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_006",
+      "language": "en",
+      "hospitalFormat": "Scripps Memorial - Cardiology Discharge Checklist",
+      "complexity": "complex",
+      "medicationCount": 10,
+      "dischargeSummaryLines": [
+        "SCRIPPS MEMORIAL HOSPITAL LA JOLLA",
+        "Cardiology Discharge Checklist",
+        "Patient: Michael Dominguez    MRN: SYN-6119",
+        "Discharge Date: 2026-04-25",
+        "Diagnosis: Heart failure with reduced ejection fraction",
+        "",
+        "MEDICATIONS TO TAKE AT HOME:",
+        "1. Bumetanide 2 mg PO daily at 08:00.",
+        "2. Sacubitril/Valsartan 49/51 mg PO twice daily at 09:00 and 21:00.",
+        "3. Bisoprolol 5 mg PO daily at 08:00.",
+        "4. Eplerenone 50 mg PO daily at 08:00.",
+        "5. Empagliflozin 10 mg PO daily at 08:00.",
+        "6. Isosorbide Mononitrate ER 60 mg PO daily at 08:00.",
+        "7. Hydralazine 50 mg PO three times daily at 08:00, 14:00, and 20:00.",
+        "8. Potassium Chloride ER 10 mEq PO twice daily at 08:00 and 20:00.",
+        "9. Aspirin 81 mg PO daily at 08:00.",
+        "10. Omeprazole 20 mg PO daily at 07:30, before breakfast.",
+        "",
+        "Do not restart prior amlodipine unless instructed by cardiology."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Bumetanide",
+            "rxNormCode": "197378",
+            "dose": "2 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "loop diuretic for edema",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Sacubitril/Valsartan",
+            "rxNormCode": "1656341",
+            "dose": "49/51 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Take morning and evening",
+            "duration": "ongoing",
+            "indication": "ARNI for HFrEF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Bisoprolol",
+            "rxNormCode": "19484",
+            "dose": "5 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Eplerenone",
+            "rxNormCode": "298869",
+            "dose": "50 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "mineralocorticoid receptor antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Empagliflozin",
+            "rxNormCode": "1545653",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Isosorbide Mononitrate",
+            "rxNormCode": "74498",
+            "dose": "60 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Extended-release; do not crush",
+            "duration": "ongoing",
+            "indication": "vasodilator therapy",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Hydralazine",
+            "rxNormCode": "5470",
+            "dose": "50 mg",
+            "frequency": "three times daily",
+            "schedule": [
+              "08:00",
+              "14:00",
+              "20:00"
+            ],
+            "instructions": "Space doses evenly while awake",
+            "duration": "ongoing",
+            "indication": "afterload reduction",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "10 mEq",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take with meals",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Aspirin",
+            "rxNormCode": "1191",
+            "dose": "81 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "antiplatelet therapy",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Omeprazole",
+            "rxNormCode": "7646",
+            "dose": "20 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "07:30"
+            ],
+            "instructions": "Take before breakfast",
+            "duration": "ongoing",
+            "indication": "GI prophylaxis",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_007",
+      "language": "en",
+      "hospitalFormat": "St. Mary's Medical Center - Hospital Discharge Plan",
+      "complexity": "complex",
+      "medicationCount": 11,
+      "dischargeSummaryLines": [
+        "ST. MARY'S MEDICAL CENTER",
+        "Hospital Discharge Plan - CHF Program",
+        "Patient: Laverne Jacobs    MRN: SYN-7781",
+        "Discharge Date: 2026-04-21",
+        "",
+        "TAKE THESE MEDICATIONS:",
+        "1) Furosemide 40 mg PO BID at 08:00 and 20:00.",
+        "2) Metolazone 2.5 mg PO Monday/Wednesday/Friday at 07:00.",
+        "3) Valsartan 80 mg PO daily at 08:00.",
+        "4) Carvedilol 12.5 mg PO BID at 08:00 and 20:00 with food.",
+        "5) Spironolactone 25 mg PO daily at 08:00.",
+        "6) Dapagliflozin 10 mg PO daily at 08:00.",
+        "7) Amiodarone 200 mg PO daily at 09:00.",
+        "8) Apixaban 5 mg PO BID at 09:00 and 21:00.",
+        "9) Potassium Chloride ER 20 mEq PO daily at 08:00.",
+        "10) Magnesium Oxide 400 mg PO daily at 13:00.",
+        "11) Atorvastatin 80 mg PO nightly at 21:00.",
+        "",
+        "PRN medication listed separately: Acetaminophen 500 mg every 6h as needed for pain."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Furosemide",
+            "rxNormCode": "4603",
+            "dose": "40 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take morning and evening",
+            "duration": "ongoing",
+            "indication": "diuretic for fluid overload",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Metolazone",
+            "rxNormCode": "6916",
+            "dose": "2.5 mg",
+            "frequency": "three times weekly",
+            "schedule": [
+              "07:00"
+            ],
+            "instructions": "Take on Monday, Wednesday, and Friday",
+            "duration": "ongoing",
+            "indication": "adjunct diuresis",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Valsartan",
+            "rxNormCode": "69749",
+            "dose": "80 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "ARB for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Carvedilol",
+            "rxNormCode": "20352",
+            "dose": "12.5 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Spironolactone",
+            "rxNormCode": "9997",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "aldosterone antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Dapagliflozin",
+            "rxNormCode": "1488564",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Amiodarone",
+            "rxNormCode": "703",
+            "dose": "200 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "09:00"
+            ],
+            "instructions": "Take at same time daily",
+            "duration": "ongoing",
+            "indication": "arrhythmia control",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Apixaban",
+            "rxNormCode": "1364430",
+            "dose": "5 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Do not skip doses",
+            "duration": "ongoing",
+            "indication": "anticoagulation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "20 mEq",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with breakfast",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Magnesium Oxide",
+            "rxNormCode": "4845",
+            "dose": "400 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "13:00"
+            ],
+            "instructions": "Take in the afternoon",
+            "duration": "ongoing",
+            "indication": "electrolyte supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Atorvastatin",
+            "rxNormCode": "83367",
+            "dose": "80 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "21:00"
+            ],
+            "instructions": "Take at bedtime",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_en_008",
+      "language": "en",
+      "hospitalFormat": "VA Greater Los Angeles - CHF Transition of Care Note",
+      "complexity": "moderate",
+      "medicationCount": 7,
+      "dischargeSummaryLines": [
+        "VA GREATER LOS ANGELES HEALTHCARE SYSTEM",
+        "Transition of Care - Congestive Heart Failure",
+        "Veteran: Thomas Bell    MRN: SYN-8824",
+        "Discharge Date: 2026-04-24",
+        "",
+        "Medication instructions:",
+        "- Torsemide 20 mg by mouth every morning at 08:00.",
+        "- Lisinopril 20 mg by mouth daily at 08:00.",
+        "- Metoprolol Succinate ER 100 mg by mouth daily at 08:00.",
+        "- Empagliflozin 10 mg by mouth daily at 08:00.",
+        "- Aspirin 81 mg by mouth daily at 08:00 with food.",
+        "- Rosuvastatin 40 mg by mouth nightly at 20:00.",
+        "- Nitroglycerin SL 0.4 mg tablet under tongue as needed for chest pain, up to 3 doses in 15 minutes.",
+        "",
+        "Call 911 if chest pain does not improve after nitroglycerin."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Torsemide",
+            "rxNormCode": "38413",
+            "dose": "20 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "loop diuretic for edema",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Lisinopril",
+            "rxNormCode": "29046",
+            "dose": "20 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "ACE inhibitor for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Metoprolol Succinate",
+            "rxNormCode": "866514",
+            "dose": "100 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Extended-release tablet; do not crush",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Empagliflozin",
+            "rxNormCode": "1545653",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Aspirin",
+            "rxNormCode": "1191",
+            "dose": "81 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "antiplatelet therapy",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Rosuvastatin",
+            "rxNormCode": "301542",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "20:00"
+            ],
+            "instructions": "Take nightly",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Nitroglycerin",
+            "rxNormCode": "4917",
+            "dose": "0.4 mg",
+            "frequency": "as needed",
+            "schedule": [],
+            "instructions": "Sublingual for chest pain; max 3 doses in 15 minutes",
+            "duration": "ongoing",
+            "indication": "rescue anti-anginal",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_es_009",
+      "language": "es",
+      "hospitalFormat": "Hospital General del Valle - Resumen de Alta CHF",
+      "complexity": "simple",
+      "medicationCount": 6,
+      "dischargeSummaryLines": [
+        "HOSPITAL GENERAL DEL VALLE",
+        "Resumen de Alta - Insuficiencia Cardiaca Congestiva",
+        "Paciente: Manuel Ortiz    Historia: SYN-ES-3302",
+        "Fecha de alta: 24/04/2026",
+        "",
+        "MEDICAMENTOS AL ALTA:",
+        "1) Furosemida 40 mg - Tomar 1 tableta cada 12 horas: 08:00 y 20:00. Con comida.",
+        "2) Enalapril 10 mg - Tomar 1 tableta cada 24 horas: 08:00.",
+        "3) Carvedilol 6.25 mg - Tomar 1 tableta cada 12 horas: 08:00 y 20:00, con alimentos.",
+        "4) Espironolactona 25 mg - Tomar 1 tableta cada 24 horas: 08:00.",
+        "5) Dapagliflozina 10 mg - Tomar 1 tableta cada 24 horas: 08:00.",
+        "6) Atorvastatina 40 mg - Tomar 1 tableta por la noche: 20:00.",
+        "",
+        "Indicaciones: dieta baja en sodio, peso diario por la manana."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Furosemide",
+            "rxNormCode": "4603",
+            "dose": "40 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take with food",
+            "duration": "ongoing",
+            "indication": "diuretic for fluid overload",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Enalapril",
+            "rxNormCode": "3827",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "ACE inhibitor for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Carvedilol",
+            "rxNormCode": "20352",
+            "dose": "6.25 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take with meals",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Spironolactone",
+            "rxNormCode": "9997",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "aldosterone antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Dapagliflozin",
+            "rxNormCode": "1488564",
+            "dose": "10 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "SGLT2 inhibitor for heart failure",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Atorvastatin",
+            "rxNormCode": "83367",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "20:00"
+            ],
+            "instructions": "Take at night",
+            "duration": "ongoing",
+            "indication": "lipid management",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "chf_es_010",
+      "language": "es",
+      "hospitalFormat": "Centro Medico Santa Ana - Plan de Medicacion al Egreso",
+      "complexity": "moderate",
+      "medicationCount": 8,
+      "dischargeSummaryLines": [
+        "CENTRO MEDICO SANTA ANA",
+        "Plan de Medicacion al Egreso - Paciente con CHF",
+        "Paciente: Rosa Mejia    Historia: SYN-ES-4410",
+        "Fecha de alta: 25/04/2026",
+        "",
+        "Medicamentos indicados:",
+        "- Torasemida 20 mg: 1 tableta VO cada 12 horas (08:00 y 20:00).",
+        "- Sacubitrilo/Valsartan 24/26 mg: 1 tableta VO cada 12 horas (09:00 y 21:00).",
+        "- Bisoprolol 2.5 mg: 1 tableta VO cada 24 horas (08:00).",
+        "- Eplerenona 25 mg: 1 tableta VO cada 24 horas (08:00).",
+        "- Digoxina 0.125 mg: 1 tableta VO cada 24 horas (08:00). Suspender si FC <60.",
+        "- Cloruro de potasio 20 mEq: 1 tableta VO cada 24 horas (08:00) con desayuno.",
+        "- Apixaban 5 mg: 1 tableta VO cada 12 horas (09:00 y 21:00).",
+        "- Pantoprazol 40 mg: 1 tableta VO cada 24 horas a las 07:30, antes del desayuno.",
+        "",
+        "No tomar antiinflamatorios sin autorizacion medica."
+      ],
+      "groundTruthRegimen": {
+        "medications": [
+          {
+            "drugName": "Torsemide",
+            "rxNormCode": "38413",
+            "dose": "20 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "08:00",
+              "20:00"
+            ],
+            "instructions": "Take morning and evening",
+            "duration": "ongoing",
+            "indication": "loop diuretic for edema",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Sacubitril/Valsartan",
+            "rxNormCode": "1656341",
+            "dose": "24/26 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Take every 12 hours",
+            "duration": "ongoing",
+            "indication": "ARNI for HFrEF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Bisoprolol",
+            "rxNormCode": "19484",
+            "dose": "2.5 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take each morning",
+            "duration": "ongoing",
+            "indication": "beta blocker for CHF",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Eplerenone",
+            "rxNormCode": "298869",
+            "dose": "25 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take in the morning",
+            "duration": "ongoing",
+            "indication": "mineralocorticoid receptor antagonist",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Digoxin",
+            "rxNormCode": "3407",
+            "dose": "0.125 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Hold if heart rate <60 bpm",
+            "duration": "ongoing",
+            "indication": "symptom and rate control",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Potassium Chloride",
+            "rxNormCode": "8591",
+            "dose": "20 mEq",
+            "frequency": "once daily",
+            "schedule": [
+              "08:00"
+            ],
+            "instructions": "Take with breakfast",
+            "duration": "ongoing",
+            "indication": "potassium supplementation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Apixaban",
+            "rxNormCode": "1364430",
+            "dose": "5 mg",
+            "frequency": "twice daily",
+            "schedule": [
+              "09:00",
+              "21:00"
+            ],
+            "instructions": "Do not skip doses",
+            "duration": "ongoing",
+            "indication": "anticoagulation",
+            "sourceConfidence": 1.0
+          },
+          {
+            "drugName": "Pantoprazole",
+            "rxNormCode": "40790",
+            "dose": "40 mg",
+            "frequency": "once daily",
+            "schedule": [
+              "07:30"
+            ],
+            "instructions": "Take before breakfast",
+            "duration": "ongoing",
+            "indication": "GI prophylaxis",
+            "sourceConfidence": 1.0
+          }
+        ]
+      }
+    }
+  ]
+}
