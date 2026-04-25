@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { IconDownload } from '../components/Icons';
+import { IconDownload, IconAlert } from '../components/Icons';
 
 type MiniTrendProps = {
   data: number[];
