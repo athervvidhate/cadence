@@ -289,6 +289,13 @@ export default function VoiceRecordScreen({ navigation }: Props) {
               <Text style={styles.timerElapsed}>{fmt(elapsed)}</Text>
               <Text style={styles.timerTotal}>/ 0:30</Text>
             </View>
+
+            <View style={styles.privacyRow}>
+              <Ionicons name="shield-checkmark-outline" size={13} color={C.ink3} />
+              <Text style={styles.privacyText}>
+                Your audio is encrypted and only used to clone your voice.
+              </Text>
+            </View>
           </>
         )}
       </View>
@@ -308,7 +315,7 @@ export default function VoiceRecordScreen({ navigation }: Props) {
             {phase === "preview" && (
               <TouchableOpacity
                 style={styles.primaryBtn}
-                onPress={() => navigation.navigate("DischargeCapture")}
+                onPress={() => navigation.navigate("PlanReady")}
                 activeOpacity={0.85}
               >
                 <Text style={styles.primaryBtnText}>Sounds great</Text>
@@ -503,6 +510,15 @@ const styles = StyleSheet.create({
     fontVariant: ["tabular-nums"],
   },
   timerTotal: { fontSize: 14, color: C.ink3 },
+
+  privacyRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    marginTop: 20,
+  },
+  privacyText: { fontSize: 13, color: C.ink3 },
 
   footer: {
     paddingHorizontal: 20,

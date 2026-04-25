@@ -27,6 +27,13 @@ export interface Discrepancy {
   bottleValue: string;
 }
 
+export interface FollowUp {
+  type: string;
+  daysFromDischarge: number;
+  doctorName?: string;
+  time?: string;
+}
+
 export interface MedTaken {
   medicationName: string;
   taken: boolean;
@@ -110,6 +117,7 @@ export interface ExtractRegimenResponse {
   interactions: Interaction[];
   discrepancies: Discrepancy[];
   needsReview: boolean;
+  followUps: FollowUp[];
 }
 
 export async function extractRegimen(
@@ -132,8 +140,18 @@ export async function extractRegimen(
           description: "May increase risk of low blood pressure",
         },
       ],
-      discrepancies: [],
-      needsReview: false,
+      discrepancies: [
+        {
+          medicationName: "Metoprolol",
+          paperValue: "25 mg",
+          bottleValue: "50 mg",
+        },
+      ],
+      needsReview: true,
+      followUps: [
+        { type: "Cardiology", daysFromDischarge: 7, doctorName: "Dr. Patel", time: "9:30 AM" },
+        { type: "Primary care", daysFromDischarge: 14, doctorName: "Dr. Hashimoto", time: "11:00 AM" },
+      ],
     };
   }
   const form = new FormData();

@@ -19,6 +19,7 @@ import {
   type Medication,
   type Interaction,
   type Discrepancy,
+  type FollowUp,
 } from "../../api/client";
 import { usePatientStore } from "../../store/patient";
 import { useCaptureStore } from "../../store/capture";
@@ -119,7 +120,7 @@ export default function RegimenReviewScreen({ navigation }: Props) {
       // Don't block demo if endpoint isn't ready
     } finally {
       setIsSubmitting(false);
-      navigation.navigate("CheckIn");
+      navigation.navigate("VoiceRecord");
     }
   }
 
@@ -248,6 +249,22 @@ export default function RegimenReviewScreen({ navigation }: Props) {
               </>
             )}
 
+            {/* Follow-up appointments */}
+            {result.followUps.length > 0 && (
+              <>
+                <Text style={styles.sectionLabel}>Follow-up appointments</Text>
+                <View style={styles.card}>
+                  {result.followUps.map((fu, i) => (
+                    <FollowUpRow
+                      key={i}
+                      item={fu}
+                      isLast={i === result.followUps.length - 1}
+                    />
+                  ))}
+                </View>
+              </>
+            )}
+
             <View style={{ height: 20 }} />
           </ScrollView>
 
@@ -345,6 +362,33 @@ function InteractionRow({
           ]}
         />
         <Text style={[styles.pillText, pillTextStyle]}>{item.severity}</Text>
+      </View>
+    </View>
+  );
+}
+
+function FollowUpRow({ item, isLast }: { item: FollowUp; isLast: boolean }) {
+  // Calculate date from daysFromDischarge relative to today
+  const date = new Date();
+  date.setDate(date.getDate() + item.daysFromDischarge);
+  const month = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return (
+    <View style={[styles.followUpRow, !isLast && styles.medRowBorder]}>
+      <View style={styles.followUpDate}>
+        <Text style={styles.followUpMonth}>{month}</Text>
+        <Text style={styles.followUpDay}>{day}</Text>
+      </View>
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text style={styles.followUpTitle}>
+          {item.type}
+          {item.doctorName ? ` · ${item.doctorName}` : ""}
+        </Text>
+        <Text style={styles.followUpSub}>
+          Day {item.daysFromDischarge}
+          {item.time ? ` · ${item.time}` : ""}
+        </Text>
       </View>
     </View>
   );
@@ -536,6 +580,25 @@ const styles = StyleSheet.create({
   pillDot: { width: 6, height: 6, borderRadius: 3 },
   pillText: { fontSize: 12, fontWeight: "500" },
   pillTextNeutral: { fontSize: 12, fontWeight: "500", color: C.ink3 },
+
+  followUpRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    gap: 14,
+  },
+  followUpDate: { width: 38, alignItems: "center" },
+  followUpMonth: {
+    fontFamily: FONT.mono,
+    fontSize: 10,
+    letterSpacing: 0.4,
+    textTransform: "uppercase",
+    color: C.ink3,
+  },
+  followUpDay: { fontFamily: FONT.serif, fontSize: 22, lineHeight: 24, color: C.ink },
+  followUpTitle: { fontSize: 14, fontWeight: "500", color: C.ink },
+  followUpSub: { fontSize: 12.5, color: C.ink3 },
 
   footer: {
     paddingHorizontal: 16,

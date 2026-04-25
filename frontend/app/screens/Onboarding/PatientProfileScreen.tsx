@@ -159,7 +159,7 @@ export default function PatientProfileScreen({ navigation }: Props) {
         },
       });
 
-      navigation.navigate("VoiceRecord");
+      navigation.navigate("DischargeCapture");
     } catch {
       setApiError(
         "Couldn't save the profile — check your connection and try again."
