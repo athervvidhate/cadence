@@ -35,7 +35,7 @@ export default function WelcomeScreen({ navigation }: Props) {
           <View style={styles.logoMark}>
             <Ionicons name="heart" size={14} color={C.bgElev} />
           </View>
-          <Text style={styles.logoText}>DischargeCoach</Text>
+          <Text style={styles.logoText}>Cadence</Text>
         </View>
 
         {/* Headline */}
@@ -46,7 +46,7 @@ export default function WelcomeScreen({ navigation }: Props) {
             <Text style={styles.headlineItalic}>handled</Text> together.
           </Text>
           <Text style={styles.sub}>
-            DischargeCoach turns the discharge paperwork into a daily plan and
+            Cadence turns the discharge paperwork into a daily plan and
             checks in twice a day — in your voice, so Dad always recognizes
             who's calling.
           </Text>

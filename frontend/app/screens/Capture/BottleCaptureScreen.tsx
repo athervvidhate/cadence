@@ -54,7 +54,7 @@ export default function BottleCaptureScreen({ navigation }: Props) {
       <SafeAreaView style={styles.permScreen} edges={["top", "bottom"]}>
         <Text style={styles.permTitle}>Camera Access Needed</Text>
         <Text style={styles.permBody}>
-          DischargeCoach needs camera access to photograph medication bottles.
+          Cadence needs camera access to photograph medication bottles.
           Tap below to allow it.
         </Text>
         <TouchableOpacity style={styles.permBtn} onPress={requestPermission}>

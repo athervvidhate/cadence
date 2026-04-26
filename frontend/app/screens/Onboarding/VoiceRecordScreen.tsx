@@ -150,7 +150,7 @@ export default function VoiceRecordScreen({ navigation }: Props) {
     const { granted } = await Audio.requestPermissionsAsync();
     if (!granted) {
       setApiError(
-        "Microphone access is required. Go to Settings → DischargeCoach and enable Microphone."
+        "Microphone access is required. Go to Settings → Cadence and enable Microphone."
       );
       return;
     }

@@ -28,8 +28,8 @@ export function DashboardLayout({ children, page }: DashboardLayoutProps) {
     <div className="dc-dash">
       <aside className="dc-dash-side">
         <div className="brand">
-          <div className="brand-mark">D</div>
-          <span className="logo">DischargeCoach</span>
+          <div className="brand-mark">C</div>
+          <span className="logo">Cadence</span>
         </div>
         <div className="eyebrow">Patient</div>
         <div className="patient-card">
