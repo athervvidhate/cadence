@@ -68,12 +68,23 @@ const ZETIC_MODEL_ID =
 const ZETIC_MODEL_VERSION = Number(
   process.env.EXPO_PUBLIC_ZETIC_MODEL_VERSION || "1"
 );
+/** Set to e.g. http://<LAN-IP>:8787/llm/medication-summary so the app sends anonymous OCR to your Gemma backend. */
 const LLM_PIPELINE_URL = normalizeOptionalUrl(
   process.env.EXPO_PUBLIC_LLM_PIPELINE_URL
 );
 const ELEVENLABS_TTS_URL = normalizeOptionalUrl(
   process.env.EXPO_PUBLIC_ELEVENLABS_TTS_URL
 );
+
+function formatUrlHostHint(rawUrl: string | undefined): string {
+  if (!rawUrl) return "";
+  try {
+    const u = new URL(rawUrl);
+    return `${u.protocol}//${u.host}${u.pathname === "/" ? "" : u.pathname}`;
+  } catch {
+    return "invalid URL in EXPO_PUBLIC_*";
+  }
+}
 
 type LoadingStage = "ocr" | "anonymize" | "llm" | "tts" | null;
 
@@ -174,6 +185,8 @@ export default function App() {
   const usingBackendAnonymizer = !canUseNativeZetic && !!ZETIC_ANONYMIZE_URL;
   const usingMockLlm = !LLM_PIPELINE_URL;
   const usingMockTts = !ELEVENLABS_TTS_URL;
+  const llmHostHint = formatUrlHostHint(LLM_PIPELINE_URL);
+  const ttsHostHint = formatUrlHostHint(ELEVENLABS_TTS_URL);
 
   const ocrReady = useMemo(
     () => Boolean(extractTextFromImage) && Boolean(isOcrSupported),
@@ -467,10 +480,16 @@ export default function App() {
                 : "mock (set EXPO_PUBLIC_ZETIC_PERSONAL_KEY or EXPO_PUBLIC_ZETIC_ANONYMIZE_URL)"}
           </Text>
           <Text style={styles.bannerText}>
-            LLM: {usingMockLlm ? "mock (set EXPO_PUBLIC_LLM_PIPELINE_URL)" : "live"}
+            LLM:{" "}
+            {usingMockLlm
+              ? "mock (set EXPO_PUBLIC_LLM_PIPELINE_URL)"
+              : `live → ${llmHostHint || "EXPO_PUBLIC_LLM_PIPELINE_URL"}`}
           </Text>
           <Text style={styles.bannerText}>
-            TTS: {usingMockTts ? "disabled (set EXPO_PUBLIC_ELEVENLABS_TTS_URL)" : "live"}
+            TTS:{" "}
+            {usingMockTts
+              ? "disabled (set EXPO_PUBLIC_ELEVENLABS_TTS_URL)"
+              : `live → ${ttsHostHint || "EXPO_PUBLIC_ELEVENLABS_TTS_URL"}`}
           </Text>
         </View>
 

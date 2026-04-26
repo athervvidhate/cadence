@@ -1,0 +1,45 @@
+Write voice check-in text for a 30-day home plan. Do NOT list 30 days. Return exactly this shape (UTF-8 JSON, compact, no extra keys beyond those below):
+
+PATIENT_PROFILE:
+{{patient_profile_json}}
+
+REGIMEN (med times and follow-ups; app will schedule and remind—do not duplicate as 30 day rows):
+{{regimen_json}}
+
+START_DATE: {{start_date_iso}}
+
+{
+  "schemaVersion": "compact-v1",
+  "totalDays": 30,
+  "language": "en",
+  "generationNote": null,
+  "scripts": {
+    "morning": {
+      "greeting": "",
+      "weightAsk": "",
+      "breathAsk": "",
+      "medsAsk": "",
+      "signoff": ""
+    },
+    "evening": {
+      "greeting": "",
+      "symptomAsk": "",
+      "medsAsk": "",
+      "encouragement": "",
+      "signoff": ""
+    },
+    "enhanced": {
+      "weighWeekAsk": "",
+      "appetiteAsk": ""
+    }
+  }
+}
+
+Rules:
+- Set "language" to the patient language code ("en" or "es") from PATIENT_PROFILE.
+- "enhanced" is only for the five longer check-ins (discharge+3, 7, 14, 21, 28); the app merges these lines on those days only. Other keys apply every day.
+- Use __DAY__ and/or __DATE__ sparingly in any line where the patient should hear the day or calendar date; omit placeholders if a line does not need them.
+- Keep each line under ~35 words. Reminder: medication reminder TTS is built in the app; your lines are the conversational script only.
+- If language is "es", every string value in scripts must be Spanish.
+
+Output JSON only.

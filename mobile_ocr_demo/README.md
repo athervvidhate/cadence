@@ -67,6 +67,13 @@ EXPO_PUBLIC_ELEVENLABS_TTS_URL=http://192.168.1.50:8787/tts/elevenlabs
 
 `EXPO_PUBLIC_ZETIC_ANONYMIZE_URL` is optional now. It is used only when on-device Zetic is unavailable.
 
+To run real regimen generation with Gemma, set `GEMMA_API_KEY` in
+`mobile_ocr_demo/backend/.env` (see backend README).
+
+For 30-day care plan JSON generation (Care Plan Agent flow), call:
+
+- `POST /care-plan/generate`
+
 ## Expected Endpoint Contracts
 
 - On-device Zetic (preferred):

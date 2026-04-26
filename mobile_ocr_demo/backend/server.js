@@ -1,6 +1,24 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  buildCarePlanCacheKey,
+  buildCarePlanFromLlmCompact,
+  isLegacyFull30DayPlan,
+} from "./src/services/carePlanGenerator.js";
+import {
+  summarizeValidationErrors,
+  validateCarePlan,
+} from "./src/services/carePlanValidation.js";
+import {
+  buildCarePlanUserPrompt,
+  carePlanSystemPrompt,
+  extractJsonObjectFromText,
+} from "./src/services/carePlanPrompting.js";
 
 dotenv.config();
 
@@ -14,10 +32,34 @@ const zeticUpstreamUrl = process.env.ZETIC_UPSTREAM_URL || "";
 const zeticApiKey = process.env.ZETIC_API_KEY || "";
 const llmUpstreamUrl = process.env.LLM_UPSTREAM_URL || "";
 const llmApiKey = process.env.LLM_API_KEY || "";
+const gemmaApiKey = process.env.GEMMA_API_KEY || "";
+const gemmaModel = process.env.GEMMA_MODEL || "gemma-3-27b-it";
+const gemmaBaseUrl =
+  process.env.GEMMA_BASE_URL || "https://generativelanguage.googleapis.com/v1beta";
+/** Regimen LLM calls; large Gemma models often exceed 30s from the phone + longer OCR text. */
+const gemmaTimeoutMs = Number(process.env.GEMMA_TIMEOUT_MS || 120000);
+const carePlanGemmaModel = process.env.CARE_PLAN_GEMMA_MODEL || gemmaModel;
+const carePlanTimeoutMs = Number(process.env.CARE_PLAN_TIMEOUT_MS || 120000);
+const carePlanMaxOutputTokens = Number(process.env.CARE_PLAN_MAX_OUTPUT_TOKENS || 4096);
 const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY || "";
 const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID || "";
 const elevenLabsModelId = process.env.ELEVENLABS_MODEL_ID || "eleven_multilingual_v2";
 const elevenLabsOutputFormat = process.env.ELEVENLABS_OUTPUT_FORMAT || "mp3_44100_128";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const defaultPromptPath = path.join(__dirname, "prompts", "regimen-system-prompt.txt");
+const regimenSystemPrompt = fs.existsSync(defaultPromptPath)
+  ? fs.readFileSync(defaultPromptPath, "utf-8")
+  : [
+      "You are a clinical discharge medication regimen assistant.",
+      "Use only the anonymized OCR text provided.",
+      "If input is not a medical discharge/medication document, say so clearly and request a clearer medical document.",
+      "If it is medical, produce a practical regimen summary with schedule, hold parameters, and follow-up reminders.",
+      "Do not invent values not grounded in the source.",
+    ].join("\n");
+
+const carePlanCache = new Map();
 
 function shorten(text, max = 320) {
   const compact = String(text || "")
@@ -33,6 +75,20 @@ function sanitizeError(error) {
   return shorten(String(error), 420);
 }
 
+function redactSensitiveUrl(url) {
+  const raw = String(url || "");
+  return raw.replace(/([?&]key=)[^&]+/gi, "$1REDACTED");
+}
+
+function joinModelTextParts(parts, { separator = "\n" } = {}) {
+  if (!Array.isArray(parts)) return "";
+  return parts
+    .filter((part) => part && part.thought !== true)
+    .map((part) => (typeof part.text === "string" ? part.text : ""))
+    .join(separator)
+    .trim();
+}
+
 async function jsonOrText(response) {
   const raw = await response.text();
   try {
@@ -45,6 +101,7 @@ async function jsonOrText(response) {
 async function postJson(url, body, { apiKey = "", headers = {}, timeoutMs = 25000 } = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  const safeUrl = redactSensitiveUrl(url);
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -59,12 +116,17 @@ async function postJson(url, body, { apiKey = "", headers = {}, timeoutMs = 2500
     const payload = await jsonOrText(response);
     if (!response.ok) {
       throw new Error(
-        `HTTP ${response.status} from ${url}: ${
+        `HTTP ${response.status} from ${safeUrl}: ${
           typeof payload === "string" ? payload : JSON.stringify(payload)
         }`
       );
     }
     return payload;
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error(`Request timed out after ${timeoutMs}ms calling ${safeUrl}`);
+    }
+    throw error;
   } finally {
     clearTimeout(timeout);
   }
@@ -126,16 +188,75 @@ function localMedicationSummary(anonymizedText) {
   }
 
   return [
-    "Medication summary:",
+    "Medication regimen summary:",
     ...medicationLines.map((line, index) => `${index + 1}. ${line}`),
     "",
     "Clinical reminder: verify this list with provider-approved instructions.",
   ].join("\n");
 }
 
+function buildRegimenUserPrompt(anonymizedText) {
+  return [
+    "Create a patient-friendly medication regimen from the anonymized OCR text below.",
+    "",
+    "Output format (plain text only):",
+    "1) Document assessment: one line saying whether this appears to be a discharge/medication document.",
+    "2) Medication regimen: bullet list of medications with dose, timing/frequency, and hold instructions when present.",
+    "3) Daily schedule: time-ordered checklist.",
+    "4) Safety notes: high-risk reminders and when to seek urgent care.",
+    "5) Missing/uncertain items: bullet list of ambiguities or missing data.",
+    "",
+    "If the text is not clearly medical/discharge related, output only:",
+    "\"This does not appear to be a discharge medication document. Please retry with a clearer discharge or medication image.\"",
+    "",
+    "Anonymized OCR text:",
+    anonymizedText,
+  ].join("\n");
+}
+
+async function runGemmaRegimenSummary(anonymizedText) {
+  const endpoint = `${gemmaBaseUrl}/models/${encodeURIComponent(gemmaModel)}:generateContent?key=${encodeURIComponent(gemmaApiKey)}`;
+
+  const payload = await postJson(
+    endpoint,
+    {
+      system_instruction: {
+        parts: [{ text: regimenSystemPrompt }],
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: buildRegimenUserPrompt(anonymizedText) }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        topP: 0.9,
+        maxOutputTokens: 1024,
+      },
+    },
+    {
+      timeoutMs: gemmaTimeoutMs,
+    }
+  );
+
+  const text = joinModelTextParts(payload?.candidates?.[0]?.content?.parts);
+
+  if (!text) {
+    throw new Error("Gemma response did not include output text.");
+  }
+  return text;
+}
+
 async function runLlmSummary(anonymizedText) {
   if (!llmUpstreamUrl) {
-    return { responseText: localMedicationSummary(anonymizedText), source: "local-mock" };
+    if (gemmaApiKey) {
+      const responseText = await runGemmaRegimenSummary(anonymizedText);
+      return { responseText, source: "gemma-direct" };
+    }
+    throw new Error(
+      "No LLM configured. Set LLM_UPSTREAM_URL or GEMMA_API_KEY to enable regimen generation."
+    );
   }
 
   const payload = await postJson(
@@ -153,6 +274,184 @@ async function runLlmSummary(anonymizedText) {
     throw new Error("LLM upstream response missing response text field.");
   }
   return { responseText, source: "llm-upstream" };
+}
+
+function stableHash(value) {
+  const raw = typeof value === "string" ? value : JSON.stringify(value || {});
+  return crypto.createHash("sha256").update(raw).digest("hex").slice(0, 20);
+}
+
+function normalizeStartDateIso(startDateInput) {
+  const raw = String(startDateInput || "").trim();
+  if (!raw) return new Date().toISOString().slice(0, 10);
+  const parsed = new Date(`${raw}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function normalizeCarePlanInput(payload) {
+  const patientProfile = payload?.patientProfile ?? payload?.patient_profile ?? {};
+  const regimen = payload?.regimen ?? payload?.regimen_json ?? {};
+  const startDateIso = normalizeStartDateIso(payload?.startDate ?? payload?.start_date);
+  const language = String(patientProfile?.language || "en").trim().toLowerCase() === "es" ? "es" : "en";
+  const regimenId = String(payload?.regimenId ?? payload?.regimen_id ?? regimen?.id ?? "").trim();
+  const forceRegenerate = Boolean(payload?.forceRegenerate ?? payload?.force_regenerate);
+  return {
+    patientProfile,
+    regimen,
+    startDateIso,
+    language,
+    regimenId,
+    forceRegenerate,
+  };
+}
+
+function extractGemmaText(payload) {
+  return joinModelTextParts(payload?.candidates?.[0]?.content?.parts);
+}
+
+function extractGemmaTextJsonResponse(payload) {
+  // When responseMimeType is application/json, parts are safest joined with
+  // no separator: a "\n" between parts can be inserted *inside* a JSON string
+  // if the API splits mid-value.
+  return joinModelTextParts(payload?.candidates?.[0]?.content?.parts, { separator: "" });
+}
+
+function readCarePlanCandidateIssues(payload) {
+  const block = payload?.promptFeedback?.blockReason;
+  if (block) {
+    return `Prompt blocked (${String(block)}).`;
+  }
+  const c = payload?.candidates?.[0];
+  if (!c) {
+    return "No candidate in model response.";
+  }
+  const reason = String(c.finishReason || c.finish_reason || "")
+    .toUpperCase()
+    .replace(/^FINISH_REASON_/, "");
+  const terminalFailure = new Set([
+    "MAX_TOKENS",
+    "SAFETY",
+    "RECITATION",
+    "BLOCKLIST",
+    "PROHIBITED_CONTENT",
+  ]);
+  if (reason && terminalFailure.has(reason)) {
+    return `Model finishReason was ${String(c.finishReason || c.finish_reason)}.`;
+  }
+  return "";
+}
+
+async function runGemmaCarePlan({ patientProfile, regimen, startDateIso }) {
+  const endpoint = `${gemmaBaseUrl}/models/${encodeURIComponent(
+    carePlanGemmaModel
+  )}:generateContent?key=${encodeURIComponent(gemmaApiKey)}`;
+
+  const payload = await postJson(
+    endpoint,
+    {
+      system_instruction: {
+        parts: [{ text: carePlanSystemPrompt }],
+      },
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: buildCarePlanUserPrompt({
+                patientProfile,
+                regimen,
+                startDateIso,
+              }),
+            },
+          ],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.1,
+        topP: 0.9,
+        maxOutputTokens: carePlanMaxOutputTokens,
+        responseMimeType: "application/json",
+      },
+    },
+    { timeoutMs: carePlanTimeoutMs }
+  );
+
+  const candidateNote = readCarePlanCandidateIssues(payload);
+  if (candidateNote) {
+    throw new Error(`Gemma care-plan call failed: ${candidateNote}`);
+  }
+
+  const rawText = extractGemmaTextJsonResponse(payload);
+  if (!rawText) {
+    throw new Error("Gemma care-plan response was empty.");
+  }
+  return extractJsonObjectFromText(rawText);
+}
+
+async function generateCarePlan(payload) {
+  const {
+    patientProfile,
+    regimen,
+    startDateIso,
+    language,
+    regimenId,
+    forceRegenerate,
+  } = normalizeCarePlanInput(payload);
+
+  if (!startDateIso) {
+    throw new Error("Invalid START_DATE. Expected ISO date (YYYY-MM-DD).");
+  }
+
+  const baseKey = buildCarePlanCacheKey({
+    regimenId,
+    regimen: regimenId ? undefined : { hash: stableHash(regimen) },
+    startDateIso,
+    language,
+  });
+  const cacheKey = baseKey;
+
+  if (!forceRegenerate && carePlanCache.has(cacheKey)) {
+    return {
+      ...carePlanCache.get(cacheKey),
+      cached: true,
+      cacheKey,
+    };
+  }
+
+  if (!gemmaApiKey) {
+    throw new Error("GEMMA_API_KEY is missing. Care plan generation requires a live LLM call.");
+  }
+
+  const rawPlan = await runGemmaCarePlan({ patientProfile, regimen, startDateIso });
+  const llmPlan = isLegacyFull30DayPlan(rawPlan)
+    ? rawPlan
+    : buildCarePlanFromLlmCompact({
+        patientProfile,
+        regimen,
+        startDateIso,
+        compact: rawPlan,
+      });
+  const validation = validateCarePlan(llmPlan, { language, startDateIso });
+  if (!validation.valid) {
+    throw new Error(`Care plan JSON failed validation: ${summarizeValidationErrors(validation.errors)}`);
+  }
+
+  const result = {
+    plan: {
+      ...llmPlan,
+      generationNote:
+        typeof llmPlan.generationNote === "string" || llmPlan.generationNote === null
+          ? llmPlan.generationNote
+          : null,
+    },
+    source: "gemma-care-plan",
+    cacheKey,
+    cached: false,
+    validationErrors: [],
+  };
+  carePlanCache.set(cacheKey, { ...result, cached: false });
+  return result;
 }
 
 async function runElevenLabs(text) {
@@ -201,8 +500,13 @@ app.get("/health", (_req, res) => {
     ok: true,
     services: {
       zetic: Boolean(zeticUpstreamUrl),
-      llm: Boolean(llmUpstreamUrl),
+      llm: Boolean(llmUpstreamUrl || gemmaApiKey),
+      gemma: Boolean(gemmaApiKey),
+      carePlanGemma: Boolean(gemmaApiKey),
       elevenlabs: Boolean(elevenLabsApiKey && elevenLabsVoiceId),
+    },
+    cache: {
+      carePlans: carePlanCache.size,
     },
   });
 });
@@ -230,6 +534,21 @@ app.post("/llm/medication-summary", async (req, res) => {
     }
     const result = await runLlmSummary(anonymizedText);
     return res.json(result);
+  } catch (error) {
+    return res.status(500).json({ error: sanitizeError(error) });
+  }
+});
+
+app.post("/care-plan/generate", async (req, res) => {
+  try {
+    const result = await generateCarePlan(req.body || {});
+    return res.json({
+      ...result.plan,
+      source: result.source,
+      cacheKey: result.cacheKey,
+      cached: result.cached,
+      validationErrors: result.validationErrors,
+    });
   } catch (error) {
     return res.status(500).json({ error: sanitizeError(error) });
   }
