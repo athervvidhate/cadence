@@ -1,0 +1,95 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Furosemide",
+      "rxNormCode": "77983",
+      "dose": "80 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Sacubitril/Valsartan",
+      "rxNormCode": "2064498",
+      "dose": "24/26 mg",
+      "frequency": "twice daily",
+      "schedule": ["09:00", "21:00"],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metoprolol Succinate ER",
+      "rxNormCode": "887298",
+      "dose": "100 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Spironolactone",
+      "rxNormCode": "77999",
+      "dose": "25 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Empagliflozin",
+      "rxNormCode": "2059842",
+      "dose": "10 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Potassium Chloride ER",
+      "rxNormCode": "207222",
+      "dose": "10 mEq",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "potassium replacement",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Clopidogrel",
+      "rxNormCode": "876987",
+      "dose": "75 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "PO with breakfast",
+      "duration": "ongoing",
+      "indication": "antiplatelet",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Rosuvastatin",
+      "rxNormCode": "1056959",
+      "dose": "20 mg",
+      "frequency": "once daily",
+      "schedule": ["20:00"],
+      "instructions": "PO nightly",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```

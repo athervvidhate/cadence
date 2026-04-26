@@ -1,0 +1,84 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Torsemide",
+      "rxNormCode": "773538",
+      "dose": "20 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "by mouth",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Lisinopril",
+      "rxNormCode": "779852",
+      "dose": "20 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "by mouth",
+      "duration": "ongoing",
+      "indication": "hypertension",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metoprolol Succinate ER",
+      "rxNormCode": "779854",
+      "dose": "100 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "by mouth",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Empagliflozin",
+      "rxNormCode": "1457053",
+      "dose": "10 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "by mouth",
+      "duration": "ongoing",
+      "indication": "diabetes",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Aspirin",
+      "rxNormCode": "779851",
+      "dose": "81 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "by mouth",
+      "duration": "ongoing",
+      "indication": "antiplatelet",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Rosuvastatin",
+      "rxNormCode": "779856",
+      "dose": "40 mg",
+      "frequency": "once daily",
+      "schedule": ["20:00"],
+      "instructions": "by mouth with food",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Nitroglycerin SL",
+      "rxNormCode": "779857",
+      "dose": "0.4 mg",
+      "frequency": "as needed",
+      "schedule": [],
+      "instructions": "tablet under tongue",
+      "duration": "ongoing",
+      "indication": "angina",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```

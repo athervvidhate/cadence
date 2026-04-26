@@ -1,0 +1,95 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Torasemida",
+      "rxNormCode": "773528",
+      "dose": "20 mg",
+      "frequency": "twice daily",
+      "schedule": ["08:00", "20:00"],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Sacubitril/Valsartan",
+      "rxNormCode": "1688348",
+      "dose": "24/26 mg",
+      "frequency": "twice daily",
+      "schedule": ["09:00", "21:00"],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "CHF management",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Bisoprolol",
+      "rxNormCode": "779858",
+      "dose": "2.5 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "CHF management",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Eplerenona",
+      "rxNormCode": "998488",
+      "dose": "25 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "CHF management",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Digoxina",
+      "rxNormCode": "6933",
+      "dose": "0.125 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Hold if K <60.",
+      "duration": "ongoing",
+      "indication": "CHF management",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Cloruro de potasio",
+      "rxNormCode": "2233",
+      "dose": "20 mEq",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take with breakfast.",
+      "duration": "ongoing",
+      "indication": "potassium replacement",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Apixaban",
+      "rxNormCode": "1484918",
+      "dose": "5 mg",
+      "frequency": "twice daily",
+      "schedule": ["09:00", "21:00"],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "anticoagulation",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Pantoprazol",
+      "rxNormCode": "726983",
+      "dose": "40 mg",
+      "frequency": "once daily",
+      "schedule": ["07:30"],
+      "instructions": "Take before breakfast.",
+      "duration": "ongoing",
+      "indication": "PPI for GI protection",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```
