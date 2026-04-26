@@ -168,7 +168,10 @@ export async function extractRegimen(
     method: "POST",
     body: form,
   });
-  if (!res.ok) throw new Error(`extractRegimen failed: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({})) as { error?: string };
+    throw new Error(`extractRegimen ${res.status}: ${body.error ?? "unknown"}`);
+  }
   return res.json() as Promise<ExtractRegimenResponse>;
 }
 
