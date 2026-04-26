@@ -17,6 +17,7 @@ const {
   streamTextAudioController,
   synthesizeVoiceController,
 } = require("../controllers/voiceController");
+const { sendVoiceMessageController } = require("../controllers/messageController");
 
 const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
@@ -31,6 +32,12 @@ router.post(
   "/patients/:id/voice",
   upload.single("audio"),
   asyncHandler(uploadVoiceController)
+);
+
+router.post(
+  "/patients/:id/messages",
+  upload.single("audio"),
+  asyncHandler(sendVoiceMessageController)
 );
 
 router.post(

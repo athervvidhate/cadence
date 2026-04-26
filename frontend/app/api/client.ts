@@ -248,6 +248,34 @@ export async function getDashboard(patientId: string): Promise<unknown> {
   return res.json();
 }
 
+// ─── POST /api/patients/:id/messages ─────────────────────────────────────────
+
+export interface SendVoiceMessageResponse {
+  messageId: string;
+  notificationStatus: "sent" | "mocked" | "failed";
+}
+
+export async function sendVoiceMessage(
+  patientId: string,
+  audioUri: string
+): Promise<SendVoiceMessageResponse> {
+  if (IS_STUB) {
+    return { messageId: "demo-msg-001", notificationStatus: "mocked" };
+  }
+  const form = new FormData();
+  form.append("audio", {
+    uri: audioUri,
+    name: "message.m4a",
+    type: "audio/m4a",
+  } as unknown as Blob);
+  const res = await fetch(`${BASE_URL}/api/patients/${patientId}/messages`, {
+    method: "POST",
+    body: form,
+  });
+  if (!res.ok) throw new Error(`sendVoiceMessage failed: ${res.status}`);
+  return res.json() as Promise<SendVoiceMessageResponse>;
+}
+
 // ─── POST /api/care-plans/generate ───────────────────────────────────────────
 
 export interface GenerateCarePlanRequest {

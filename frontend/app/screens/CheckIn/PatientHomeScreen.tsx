@@ -2,6 +2,7 @@
 // Hold the button to record a voice message for the caregiver; release to send.
 import React, { useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Animated,
   Platform,
   Pressable,
@@ -15,10 +16,11 @@ import { Audio } from "expo-av";
 import type { StackScreenProps } from "@react-navigation/stack";
 import type { RootStackParamList } from "../../navigation";
 import { usePatientStore } from "../../store/patient";
+import { sendVoiceMessage } from "../../api/client";
 import { FONT } from "../../theme";
 
 type Props = StackScreenProps<RootStackParamList, "PatientHome">;
-type HomeState = "idle" | "recording" | "sent";
+type HomeState = "idle" | "recording" | "uploading" | "sent" | "error";
 
 const BG = "#0E120F";
 const TEXT = "#F2EEE3";
@@ -58,12 +60,12 @@ function useElapsedTimer(running: boolean) {
 }
 
 // Three concentric rings pulse outward while recording.
-// Each ring starts its own loop delayed by 400 ms so they stagger.
 const RING_SIZES = [240, 300, 360] as const;
 const RING_DELAYS = [0, 400, 800] as const;
 const RING_PERIOD = 1400;
 
 export default function PatientHomeScreen(_props: Props) {
+  const patientId = usePatientStore((s) => s.patientId);
   const preferredName = usePatientStore((s) => s.preferredName);
   const caregiver = usePatientStore((s) => s.caregiver);
   const currentDay = usePatientStore((s) => s.currentDay);
@@ -71,10 +73,12 @@ export default function PatientHomeScreen(_props: Props) {
 
   const [homeState, setHomeState] = useState<HomeState>("idle");
   const isRecording = homeState === "recording";
+  const isUploading = homeState === "uploading";
   const isSent = homeState === "sent";
+  const isError = homeState === "error";
 
   const recordingRef = useRef<Audio.Recording | null>(null);
-  const sentTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMountedRef = useRef(true);
 
   // Clock — refreshes every 30 s
@@ -98,7 +102,7 @@ export default function PatientHomeScreen(_props: Props) {
   useEffect(() => {
     return () => {
       isMountedRef.current = false;
-      if (sentTimerRef.current) clearTimeout(sentTimerRef.current);
+      if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
       stopRings();
       recordingRef.current?.stopAndUnloadAsync().catch(() => {});
     };
@@ -110,16 +114,8 @@ export default function PatientHomeScreen(_props: Props) {
       const t = setTimeout(() => {
         const loop = Animated.loop(
           Animated.sequence([
-            Animated.timing(anim, {
-              toValue: 1,
-              duration: RING_PERIOD,
-              useNativeDriver: true,
-            }),
-            Animated.timing(anim, {
-              toValue: 0,
-              duration: 0,
-              useNativeDriver: true,
-            }),
+            Animated.timing(anim, { toValue: 1, duration: RING_PERIOD, useNativeDriver: true }),
+            Animated.timing(anim, { toValue: 0, duration: 0, useNativeDriver: true }),
           ])
         );
         loop.start();
@@ -137,11 +133,17 @@ export default function PatientHomeScreen(_props: Props) {
     ringAnims.forEach((a) => a.setValue(0));
   }
 
+  function scheduleReset(ms = 3000) {
+    if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
+    transitionTimerRef.current = setTimeout(() => {
+      if (isMountedRef.current) setHomeState("idle");
+    }, ms);
+  }
+
   async function handlePressIn() {
     if (homeState !== "idle") return;
-    if (sentTimerRef.current) clearTimeout(sentTimerRef.current);
+    if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
 
-    // Enter recording state immediately so UI responds without waiting for mic
     setHomeState("recording");
     startRings();
 
@@ -168,13 +170,15 @@ export default function PatientHomeScreen(_props: Props) {
   }
 
   async function handlePressOut() {
-    if (!isMountedRef.current) return;
-    if (homeState !== "recording") return;
+    if (!isMountedRef.current || homeState !== "recording") return;
 
     stopRings();
 
+    // Retrieve URI before unloading — getURI() is unavailable after stopAndUnloadAsync
+    let audioUri: string | null = null;
     if (recordingRef.current) {
       try {
+        audioUri = recordingRef.current.getURI();
         await recordingRef.current.stopAndUnloadAsync();
       } catch {
         // ignore cleanup errors
@@ -182,20 +186,51 @@ export default function PatientHomeScreen(_props: Props) {
       recordingRef.current = null;
     }
 
+    // Always restore audio mode so check-in playback works normally
+    try {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+      });
+    } catch {}
+
     if (!isMountedRef.current) return;
-    setHomeState("sent");
-    sentTimerRef.current = setTimeout(() => {
-      if (isMountedRef.current) setHomeState("idle");
-    }, 3000);
+
+    if (!audioUri || !patientId) {
+      // Nothing recorded or session not initialised — silently reset
+      setHomeState("idle");
+      return;
+    }
+
+    setHomeState("uploading");
+
+    try {
+      await sendVoiceMessage(patientId, audioUri);
+      if (!isMountedRef.current) return;
+      setHomeState("sent");
+      scheduleReset(3000);
+    } catch {
+      if (!isMountedRef.current) return;
+      setHomeState("error");
+      scheduleReset(3000);
+    }
   }
 
-  const timeStr = now.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
-  const dayStr = now
-    .toLocaleDateString("en-US", { weekday: "short" })
-    .toUpperCase();
+  const timeStr = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  const dayStr = now.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+
+  function holdHintLabel() {
+    if (isRecording)  return `Speak as long as you need · ${elapsed}`;
+    if (isUploading)  return "Sending your message…";
+    if (isSent)       return "Message sent";
+    if (isError)      return "Couldn't send — try again";
+    return "Hold to leave a message";
+  }
+
+  function buttonLabel() {
+    if (isRecording || isUploading) return isRecording ? "Listening…" : "Sending…";
+    return `I need ${caregiverFirstName}`;
+  }
 
   return (
     <View style={styles.root}>
@@ -241,14 +276,9 @@ export default function PatientHomeScreen(_props: Props) {
                       inputRange: [0, 0.3, 1],
                       outputRange: [0, 0.35 - i * 0.08, 0],
                     }),
-                    transform: [
-                      {
-                        scale: anim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [0.9, 1.1],
-                        }),
-                      },
-                    ],
+                    transform: [{
+                      scale: anim.interpolate({ inputRange: [0, 1], outputRange: [0.9, 1.1] }),
+                    }],
                   },
                 ]}
               />
@@ -258,7 +288,12 @@ export default function PatientHomeScreen(_props: Props) {
           <Pressable
             onPressIn={() => void handlePressIn()}
             onPressOut={() => void handlePressOut()}
-            style={[styles.bigButton, isRecording && styles.bigButtonHot]}
+            disabled={isUploading}
+            style={[
+              styles.bigButton,
+              isRecording && styles.bigButtonHot,
+              isUploading && styles.bigButtonMuted,
+            ]}
           >
             {isRecording ? (
               <View style={styles.waveRow}>
@@ -266,41 +301,52 @@ export default function PatientHomeScreen(_props: Props) {
                   <View key={i} style={[styles.waveBar, { height: h }]} />
                 ))}
               </View>
+            ) : isUploading ? (
+              <ActivityIndicator color={TEXT} size="large" />
             ) : (
               <Ionicons name="mic" size={44} color={TEXT} />
             )}
-            <Text style={styles.bigButtonLabel}>
-              {isRecording ? "Listening…" : `I need ${caregiverFirstName}`}
-            </Text>
+            <Text style={styles.bigButtonLabel}>{buttonLabel()}</Text>
           </Pressable>
 
-          <Text style={[styles.holdHint, isRecording && styles.holdHintActive]}>
-            {isRecording
-              ? `Speak as long as you need · ${elapsed}`
-              : "Hold to leave a message"}
+          <Text style={[
+            styles.holdHint,
+            isRecording && styles.holdHintActive,
+            isError && styles.holdHintError,
+          ]}>
+            {holdHintLabel()}
           </Text>
         </View>
 
         {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            CADENCE · LISTENING ONLY WHEN HELD
-          </Text>
+          <Text style={styles.footerText}>CADENCE · LISTENING ONLY WHEN HELD</Text>
         </View>
 
       </SafeAreaView>
 
-      {/* Sent toast — absolutely positioned over the footer */}
+      {/* Sent toast */}
       {isSent && (
         <View style={styles.toast}>
           <View style={styles.toastIconWrap}>
             <Ionicons name="checkmark" size={20} color="rgba(180,240,200,1)" />
           </View>
           <View>
-            <Text style={styles.toastTitle}>
-              Message sent to {caregiverFirstName}
-            </Text>
+            <Text style={styles.toastTitle}>Message sent to {caregiverFirstName}</Text>
             <Text style={styles.toastSub}>she'll call you back soon</Text>
+          </View>
+        </View>
+      )}
+
+      {/* Error toast */}
+      {isError && (
+        <View style={[styles.toast, styles.toastError]}>
+          <View style={[styles.toastIconWrap, styles.toastIconWrapError]}>
+            <Ionicons name="alert" size={20} color="rgba(255,160,140,1)" />
+          </View>
+          <View>
+            <Text style={styles.toastTitle}>Couldn't send the message</Text>
+            <Text style={styles.toastSub}>Check your connection and try again</Text>
           </View>
         </View>
       )}
@@ -384,9 +430,8 @@ const styles = StyleSheet.create({
       android: { elevation: 14 },
     }),
   },
-  bigButtonHot: {
-    backgroundColor: BTN_RED_HOT,
-  },
+  bigButtonHot: { backgroundColor: BTN_RED_HOT },
+  bigButtonMuted: { opacity: 0.6 },
 
   bigButtonLabel: {
     fontFamily: FONT.serif,
@@ -416,11 +461,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     minHeight: 26,
   },
-  holdHintActive: {
-    color: "#FFB199",
-  },
+  holdHintActive: { color: "#FFB199" },
+  holdHintError: { color: "#FF9980" },
 
-  // Toast sits above the footer area
+  // Sent toast
   toast: {
     position: "absolute",
     left: 24,
@@ -452,6 +496,15 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "rgba(242,238,227,0.6)",
     marginTop: 2,
+  },
+
+  // Error toast overrides
+  toastError: {
+    backgroundColor: "rgba(220,80,70,0.10)",
+    borderColor: "rgba(220,80,70,0.30)",
+  },
+  toastIconWrapError: {
+    backgroundColor: "rgba(220,80,70,0.18)",
   },
 
   footer: {
