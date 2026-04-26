@@ -1,0 +1,7 @@
+{
+  "id": "response_weight_logged",
+  "language": "en",
+  "variables": ["weight_reading"],
+  "tone": "confirming",
+  "text": "Got it. I logged your weight as {{weight_reading}} pounds."
+}

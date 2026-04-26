@@ -1,0 +1,7 @@
+{
+  "id": "encouragement_doing_well",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "encouraging",
+  "text": "You are doing well, {{patient_name}}. These small check-ins help you stay steady at home."
+}

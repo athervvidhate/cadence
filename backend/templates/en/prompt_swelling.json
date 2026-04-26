@@ -1,0 +1,7 @@
+{
+  "id": "prompt_swelling",
+  "language": "en",
+  "variables": ["patient_name"],
+  "tone": "calm",
+  "text": "{{patient_name}}, please check your feet and ankles. Do you notice more swelling than yesterday?"
+}

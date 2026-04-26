@@ -1,0 +1,272 @@
+/* DischargeCoach — design tokens */
+:root {
+  --bg: #F6F3EC;
+  --bg-elev: #FBF9F4;
+  --surface: #FFFFFF;
+  --ink: #1A1F1B;
+  --ink-2: #3B413C;
+  --ink-3: #6B716C;
+  --ink-4: #9CA29D;
+  --hairline: #E4DFD3;
+  --hairline-2: #EFEAE0;
+  --accent: oklch(0.52 0.09 155);   /* clinical green */
+  --accent-soft: oklch(0.94 0.04 155);
+  --accent-ink: oklch(0.32 0.08 155);
+  --warn: oklch(0.78 0.13 75);      /* amber yellow flag */
+  --warn-soft: oklch(0.95 0.06 75);
+  --warn-ink: oklch(0.42 0.11 60);
+  --danger: oklch(0.58 0.18 25);    /* clinical red */
+  --danger-soft: oklch(0.94 0.05 25);
+  --danger-ink: oklch(0.38 0.15 25);
+  --info: oklch(0.55 0.08 240);
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  --shadow-sm: 0 1px 2px rgba(26,31,27,.06), 0 1px 1px rgba(26,31,27,.03);
+  --shadow-md: 0 6px 16px -8px rgba(26,31,27,.18), 0 2px 4px rgba(26,31,27,.06);
+  --shadow-lg: 0 24px 48px -20px rgba(26,31,27,.22), 0 4px 12px rgba(26,31,27,.08);
+
+  --font-sans: "Geist", "Söhne", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Phone screen base ---------- */
+.dc-phone {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  overflow: hidden;
+  position: relative;
+}
+.dc-phone-scroll { flex: 1; overflow-y: auto; }
+
+/* Top app bar */
+.dc-appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px 10px;
+  font-size: 14px;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+}
+.dc-appbar .step-dots { display: flex; gap: 6px; }
+.dc-appbar .step-dot {
+  width: 22px; height: 3px; border-radius: 2px;
+  background: var(--hairline);
+}
+.dc-appbar .step-dot.active { background: var(--accent); }
+.dc-appbar .step-dot.done { background: var(--accent); opacity: 0.4; }
+
+.dc-link { color: var(--ink-3); font-size: 14px; }
+
+/* Headlines */
+.dc-h-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+.dc-h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+.dc-h1-small {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.dc-h-sub {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink-3);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* Buttons */
+.dc-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 22px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  letter-spacing: -0.005em;
+  transition: all 0.15s ease;
+}
+.dc-btn-primary {
+  background: var(--ink);
+  color: var(--bg-elev);
+}
+.dc-btn-primary:hover { background: #000; }
+.dc-btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--hairline);
+}
+.dc-btn-block { width: 100%; padding: 18px 22px; font-size: 16px; }
+
+/* Cards */
+.dc-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+/* Status pills */
+.dc-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.dc-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+.dc-pill.green { background: var(--accent-soft); color: var(--accent-ink); }
+.dc-pill.green .dot { background: var(--accent); }
+.dc-pill.yellow { background: var(--warn-soft); color: var(--warn-ink); }
+.dc-pill.yellow .dot { background: var(--warn); }
+.dc-pill.red { background: var(--danger-soft); color: var(--danger-ink); }
+.dc-pill.red .dot { background: var(--danger); }
+.dc-pill.neutral { background: var(--hairline-2); color: var(--ink-2); }
+
+/* Form inputs */
+.dc-field { display: flex; flex-direction: column; gap: 6px; }
+.dc-label {
+  font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 500;
+}
+.dc-input {
+  padding: 14px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  outline: none;
+}
+.dc-input:focus { border-color: var(--ink-2); }
+
+/* Divider */
+.dc-divider { height: 1px; background: var(--hairline); border: 0; margin: 0; }
+
+/* Iconography (placeholders) */
+.dc-icon { width: 20px; height: 20px; display: inline-block; }
+
+/* Patient-mode huge type screens */
+.dc-patient-screen {
+  background: #0E120F;
+  color: #F2EEE3;
+  height: 100%;
+  display: flex; flex-direction: column;
+  font-family: var(--font-sans);
+}
+.dc-patient-greeting {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+/* Web dashboard */
+.dc-dash {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+.dc-dash-side {
+  background: var(--bg-elev);
+  border-right: 1px solid var(--hairline);
+  padding: 24px 18px;
+  display: flex; flex-direction: column;
+  gap: 8px;
+}
+.dc-dash-main { padding: 28px 36px; overflow: hidden; }
+.dc-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 14px; color: var(--ink-2);
+  cursor: pointer;
+}
+.dc-nav-item.active { background: var(--ink); color: var(--bg-elev); }
+.dc-nav-item:not(.active):hover { background: var(--hairline-2); }
+
+/* tag */
+.dc-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--hairline-2);
+  color: var(--ink-3);
+}
+
+/* Sparkline grid lines */
+.dc-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(26,31,27,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26,31,27,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Utility */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; }
+.mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; }
+.flex-1 { flex: 1; }
+.text-mono { font-family: var(--font-mono); }
+.text-serif { font-family: var(--font-serif); }
+.text-ink-3 { color: var(--ink-3); }
+.text-ink-2 { color: var(--ink-2); }
+.text-danger { color: var(--danger-ink); }
+.text-warn { color: var(--warn-ink); }
+.text-accent { color: var(--accent-ink); }
+
+.dc-soft-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+}

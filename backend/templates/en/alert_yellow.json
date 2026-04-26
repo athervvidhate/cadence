@@ -1,0 +1,7 @@
+{
+  "id": "alert_yellow",
+  "language": "en",
+  "variables": ["patient_name", "weight_delta", "threshold"],
+  "tone": "firm",
+  "text": "{{patient_name}}, your weight changed by {{weight_delta}}, which is over {{threshold}}. Let us keep a close eye on this today."
+}

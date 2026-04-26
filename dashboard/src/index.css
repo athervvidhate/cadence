@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap");
+
+:root {
+  --bg: #f6f3ec;
+  --bg-elev: #fbf9f4;
+  --surface: #ffffff;
+  --ink: #1a1f1b;
+  --ink-2: #3b413c;
+  --ink-3: #6b716c;
+  --hairline: #e4dfd3;
+  --accent-soft: oklch(0.94 0.04 155);
+  --accent-ink: oklch(0.32 0.08 155);
+  --warn-soft: oklch(0.95 0.06 75);
+  --warn-ink: oklch(0.42 0.11 60);
+  --danger-soft: oklch(0.94 0.05 25);
+  --danger-ink: oklch(0.38 0.15 25);
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
