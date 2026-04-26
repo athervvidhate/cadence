@@ -152,7 +152,7 @@ export default function PlanReadyScreen({ navigation }: Props) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.primaryBtn}
-          onPress={() => navigation.navigate("CheckIn")}
+          onPress={() => navigation.navigate("PatientHome")}
           activeOpacity={0.85}
         >
           <Text style={styles.primaryBtnText}>Hand the phone to{" "}

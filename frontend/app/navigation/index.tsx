@@ -9,6 +9,7 @@ import BottleCaptureScreen from "../screens/Capture/BottleCaptureScreen";
 import RegimenReviewScreen from "../screens/Capture/RegimenReviewScreen";
 import VoiceRecordScreen from "../screens/Onboarding/VoiceRecordScreen";
 import PlanReadyScreen from "../screens/Onboarding/PlanReadyScreen";
+import PatientHomeScreen from "../screens/CheckIn/PatientHomeScreen";
 import CheckInScreen from "../screens/CheckIn/CheckInScreen";
 import { usePatientStore } from "../store/patient";
 
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   RegimenReview: undefined;
   VoiceRecord: undefined;
   PlanReady: undefined;
+  PatientHome: undefined;
   CheckIn: undefined;
 };
 
@@ -31,7 +33,7 @@ export default function AppNavigator() {
 
   return (
     <Stack.Navigator
-      initialRouteName={hasPatient ? "CheckIn" : "Welcome"}
+      initialRouteName={hasPatient ? "PatientHome" : "Welcome"}
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
@@ -41,6 +43,7 @@ export default function AppNavigator() {
       <Stack.Screen name="RegimenReview" component={RegimenReviewScreen} />
       <Stack.Screen name="VoiceRecord" component={VoiceRecordScreen} />
       <Stack.Screen name="PlanReady" component={PlanReadyScreen} />
+      <Stack.Screen name="PatientHome" component={PatientHomeScreen} />
       <Stack.Screen name="CheckIn" component={CheckInScreen} />
     </Stack.Navigator>
   );
