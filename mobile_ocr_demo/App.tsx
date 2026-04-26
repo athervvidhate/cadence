@@ -7,6 +7,8 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  NativeModules,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -22,9 +24,30 @@ type TextExtractorModule = {
   isSupported: boolean;
 };
 
+type ZeticNativeModule = {
+  anonymize: (
+    text: string,
+    options?: {
+      personalKey?: string;
+      modelId?: string;
+      modelVersion?: number;
+    }
+  ) => Promise<string>;
+};
+
 let extractTextFromImage: ExtractTextFromImageFn | null = null;
 let isOcrSupported = false;
 let ocrModuleInitError = "";
+const nativeZeticModule = NativeModules.ZeticAnonymizerModule as
+  | ZeticNativeModule
+  | undefined;
+
+function normalizeOptionalUrl(rawValue: string | undefined): string | undefined {
+  const value = rawValue?.trim();
+  if (!value) return undefined;
+  if (value.includes("your-backend.example.com")) return undefined;
+  return value;
+}
 
 try {
   // Use dynamic require so the app can still render a friendly message when
@@ -36,15 +59,27 @@ try {
   ocrModuleInitError = error instanceof Error ? error.message : String(error);
 }
 
-const ZETIC_ANONYMIZE_URL = process.env.EXPO_PUBLIC_ZETIC_ANONYMIZE_URL;
-const LLM_PIPELINE_URL = process.env.EXPO_PUBLIC_LLM_PIPELINE_URL;
-const ELEVENLABS_TTS_URL = process.env.EXPO_PUBLIC_ELEVENLABS_TTS_URL;
+const ZETIC_ANONYMIZE_URL = normalizeOptionalUrl(
+  process.env.EXPO_PUBLIC_ZETIC_ANONYMIZE_URL
+);
+const ZETIC_PERSONAL_KEY = process.env.EXPO_PUBLIC_ZETIC_PERSONAL_KEY;
+const ZETIC_MODEL_ID =
+  process.env.EXPO_PUBLIC_ZETIC_MODEL_ID || "Steve/text-anonymizer-v1";
+const ZETIC_MODEL_VERSION = Number(
+  process.env.EXPO_PUBLIC_ZETIC_MODEL_VERSION || "1"
+);
+const LLM_PIPELINE_URL = normalizeOptionalUrl(
+  process.env.EXPO_PUBLIC_LLM_PIPELINE_URL
+);
+const ELEVENLABS_TTS_URL = normalizeOptionalUrl(
+  process.env.EXPO_PUBLIC_ELEVENLABS_TTS_URL
+);
 
 type LoadingStage = "ocr" | "anonymize" | "llm" | "tts" | null;
 
 function stageLabel(stage: LoadingStage): string {
   if (stage === "ocr") return "Running on-device OCR";
-  if (stage === "anonymize") return "Calling Zetic anonymizer";
+  if (stage === "anonymize") return "Running Zetic anonymizer";
   if (stage === "llm") return "Calling LLM pipeline";
   if (stage === "tts") return "Generating TTS audio";
   return "";
@@ -131,7 +166,12 @@ export default function App() {
   const soundRef = useRef<Audio.Sound | null>(null);
 
   const isBusy = loadingStage !== null;
-  const usingMockAnonymizer = !ZETIC_ANONYMIZE_URL;
+  const canUseNativeZetic =
+    Platform.OS === "ios" &&
+    Boolean(nativeZeticModule?.anonymize) &&
+    Boolean(ZETIC_PERSONAL_KEY);
+  const usingMockAnonymizer = !canUseNativeZetic && !ZETIC_ANONYMIZE_URL;
+  const usingBackendAnonymizer = !canUseNativeZetic && !!ZETIC_ANONYMIZE_URL;
   const usingMockLlm = !LLM_PIPELINE_URL;
   const usingMockTts = !ELEVENLABS_TTS_URL;
 
@@ -230,6 +270,21 @@ export default function App() {
   const anonymizeWithZetic = async (inputText: string): Promise<string> => {
     setLoadingStage("anonymize");
     try {
+      if (canUseNativeZetic) {
+        const nativeResult = await nativeZeticModule!.anonymize(inputText, {
+          personalKey: ZETIC_PERSONAL_KEY,
+          modelId: ZETIC_MODEL_ID,
+          modelVersion: Number.isFinite(ZETIC_MODEL_VERSION)
+            ? ZETIC_MODEL_VERSION
+            : 1,
+        });
+        if (!nativeResult.trim()) {
+          throw new Error("On-device Zetic anonymizer returned an empty result.");
+        }
+        setAnonymizedText(nativeResult);
+        return nativeResult;
+      }
+
       if (!ZETIC_ANONYMIZE_URL) {
         const mock = mockAnonymizeText(inputText);
         setAnonymizedText(mock);
@@ -404,7 +459,12 @@ export default function App() {
         <View style={styles.banner}>
           <Text style={styles.bannerTitle}>Endpoint mode</Text>
           <Text style={styles.bannerText}>
-            Zetic: {usingMockAnonymizer ? "mock (set EXPO_PUBLIC_ZETIC_ANONYMIZE_URL)" : "live"}
+            Zetic:{" "}
+            {canUseNativeZetic
+              ? "on-device iOS model"
+              : usingBackendAnonymizer
+                ? "backend endpoint"
+                : "mock (set EXPO_PUBLIC_ZETIC_PERSONAL_KEY or EXPO_PUBLIC_ZETIC_ANONYMIZE_URL)"}
           </Text>
           <Text style={styles.bannerText}>
             LLM: {usingMockLlm ? "mock (set EXPO_PUBLIC_LLM_PIPELINE_URL)" : "live"}
@@ -425,6 +485,18 @@ export default function App() {
             ) : null}
           </View>
         )}
+        {Platform.OS === "ios" &&
+          !canUseNativeZetic &&
+          ZETIC_PERSONAL_KEY &&
+          !ZETIC_ANONYMIZE_URL && (
+            <View style={[styles.banner, styles.warningBanner]}>
+              <Text style={styles.warningTitle}>Zetic native module not active</Text>
+              <Text style={styles.warningText}>
+                Personal key is set, but the iOS native anonymizer module is not available in this
+                build yet. Rebuild the iOS dev client after `pod install`.
+              </Text>
+            </View>
+          )}
 
         <View style={styles.actionsRow}>
           <ActionButton

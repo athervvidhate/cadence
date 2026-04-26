@@ -1,0 +1,16 @@
+diff --git a/node_modules/expo-text-extractor/ios/ExpoTextExtractorModule.swift b/node_modules/expo-text-extractor/ios/ExpoTextExtractorModule.swift
+index 102a7a0..942eb1e 100644
+--- a/node_modules/expo-text-extractor/ios/ExpoTextExtractorModule.swift
++++ b/node_modules/expo-text-extractor/ios/ExpoTextExtractorModule.swift
+@@ -30,6 +30,11 @@ public class ExpoTextExtractorModule: Module {
+                     promise.resolve(recognizedTexts)
+                 }
+ 
++                // Force higher OCR quality for medical documents.
++                request.recognitionLevel = .accurate
++                request.usesLanguageCorrection = true
++                request.minimumTextHeight = 0.01
++
+                 try requestHandler.perform([request])
+             } catch {
+                 promise.reject(error)
