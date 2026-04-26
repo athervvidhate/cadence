@@ -84,7 +84,7 @@ async function callGemmaMultimodal(imageBuffers) {
     ],
     generationConfig: {
       temperature: 0.0,
-      responseMimeType: "application/json",
+      maxOutputTokens: 2048,
     },
   };
 
@@ -129,33 +129,28 @@ async function extractAndStoreRegimen({ patientId, imageBuffers = [] }) {
   let extractionPath = "gemma_fallback";
 
   if (imageBuffers.length > 0 && process.env.GOOGLE_API_KEY) {
-    try {
-      const gemmaResult = await callGemmaMultimodal(imageBuffers);
-      if (gemmaResult && Array.isArray(gemmaResult.medications) && gemmaResult.medications.length > 0) {
-        extractedData = {
-          extractionConfidence: gemmaResult.extractionConfidence || 0.85,
-          medications: gemmaResult.medications,
-          discrepancies: gemmaResult.discrepancies || [],
-          followUps: gemmaResult.followUps || [],
-        };
-        extractionPath = "gemma_direct";
-        console.log(`[regimenService] Gemma extracted ${extractedData.medications.length} medications`);
-      }
-    } catch (err) {
-      console.warn("[regimenService] Gemma extraction failed, falling back to mock:", err.message);
+    // Real Gemma extraction — throws on failure (no silent fallback)
+    const gemmaResult = await callGemmaMultimodal(imageBuffers);
+    if (!gemmaResult || !Array.isArray(gemmaResult.medications) || gemmaResult.medications.length === 0) {
+      throw new Error("Gemma returned no medications — check the image quality or model response");
     }
-  }
-
-  if (!extractedData) {
+    extractedData = {
+      extractionConfidence: gemmaResult.extractionConfidence || 0.85,
+      medications: gemmaResult.medications,
+      discrepancies: gemmaResult.discrepancies || [],
+      followUps: gemmaResult.followUps || [],
+    };
+    extractionPath = "gemma_direct";
+    console.log(`[regimenService] Gemma extracted ${extractedData.medications.length} medications`);
+  } else {
+    // No API key — use mock (dev/demo mode)
+    console.log("[regimenService] No GOOGLE_API_KEY — using mock regimen");
     extractedData = {
       extractionConfidence: MOCK_AGENT_RESPONSE.extractionConfidence,
       medications: MOCK_AGENT_RESPONSE.medications,
       discrepancies: MOCK_AGENT_RESPONSE.discrepancies,
       followUps: MOCK_AGENT_RESPONSE.followUps,
     };
-    if (!process.env.GOOGLE_API_KEY) {
-      console.log("[regimenService] No GOOGLE_API_KEY — using mock regimen");
-    }
   }
 
   const interactions = findInteractions(extractedData.medications);

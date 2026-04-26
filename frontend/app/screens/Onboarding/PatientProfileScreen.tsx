@@ -115,6 +115,24 @@ export default function PatientProfileScreen({ navigation }: Props) {
   const setPatientId = usePatientStore((s) => s.setPatientId);
   const setPatientProfile = usePatientStore((s) => s.setPatientProfile);
 
+  const DEMO_DATA: FormState = {
+    patientName: "Robert Chen",
+    preferredName: "Dad",
+    ageYears: "76",
+    baselineWeightLbs: "184",
+    language: "en",
+    caregiverName: "Sarah Chen",
+    caregiverRelationship: "daughter",
+    caregiverPhone: "+12125551234",
+    caregiverEmail: "sarah@example.com",
+  };
+
+  function handleAutofill() {
+    setForm(DEMO_DATA);
+    setErrors({});
+    setApiError(null);
+  }
+
   function update(field: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -177,7 +195,9 @@ export default function PatientProfileScreen({ navigation }: Props) {
       <View style={styles.topBar}>
         <View style={{ width: 56 }} />
         <StepDots active={0} total={5} />
-        <View style={{ width: 56 }} />
+        <TouchableOpacity onPress={handleAutofill} style={styles.autofillBtn} activeOpacity={0.7}>
+          <Text style={styles.autofillText}>Autofill</Text>
+        </TouchableOpacity>
       </View>
 
       <KeyboardAvoidingView
@@ -403,6 +423,8 @@ const styles = StyleSheet.create({
   stepDot: { width: 22, height: 3, borderRadius: 2, backgroundColor: C.hairline },
   stepDotActive: { backgroundColor: C.accent },
   stepDotDone: { backgroundColor: C.accent, opacity: 0.4 },
+  autofillBtn: { width: 56, alignItems: "flex-end" },
+  autofillText: { fontSize: 14, color: C.accent, fontWeight: "500" },
 
   scroll: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 8 },
 

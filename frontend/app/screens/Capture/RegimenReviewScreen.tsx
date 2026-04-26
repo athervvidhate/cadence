@@ -125,14 +125,11 @@ export default function RegimenReviewScreen({ navigation }: Props) {
       setRegimenIdStore(res.regimenId);
       setResult(res);
       setLoadPhase("success");
-    } catch {
-      // Network/backend failure — use fallback so onboarding never blocks
-      const fallback = FALLBACK_REGIMEN;
-      setExtractionResult(fallback);
-      setRegimenIdCapture(fallback.regimenId);
-      setRegimenIdStore(fallback.regimenId);
-      setResult(fallback);
-      setLoadPhase("success");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[RegimenReview] extraction failed:", msg);
+      setApiError(`Extraction failed: ${msg}`);
+      setLoadPhase("error");
     }
   }
 
