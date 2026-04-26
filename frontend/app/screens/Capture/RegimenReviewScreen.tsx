@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Animated,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { StackScreenProps } from "@react-navigation/stack";
@@ -26,7 +27,7 @@ import { useCaptureStore } from "../../store/capture";
 import { C, FONT, R } from "../../theme";
 
 type Props = StackScreenProps<RootStackParamList, "RegimenReview">;
-type LoadPhase = "loading" | "success" | "error";
+type LoadPhase = "loading" | "success" | "error" | "manual";
 
 const FALLBACK_REGIMEN: ExtractRegimenResponse = {
   regimenId: "demo-regimen-fallback",
@@ -80,6 +81,11 @@ export default function RegimenReviewScreen({ navigation }: Props) {
   const [result, setResult] = useState<ExtractRegimenResponse | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [manualMedications, setManualMedications] = useState<Medication[]>([]);
+  const [manualName, setManualName] = useState("");
+  const [manualDose, setManualDose] = useState("");
+  const [manualFreq, setManualFreq] = useState("");
 
   const pulseAnim = useRef(new Animated.Value(0.4)).current;
   const loopRef = useRef<Animated.CompositeAnimation | null>(null);
@@ -148,6 +154,36 @@ export default function RegimenReviewScreen({ navigation }: Props) {
     }
   }
 
+  function handleAddManualMed() {
+    if (!manualName.trim() || !manualDose.trim() || !manualFreq.trim()) return;
+    setManualMedications((ms) => [
+      ...ms,
+      { name: manualName.trim(), dose: manualDose.trim(), frequency: manualFreq.trim() },
+    ]);
+    setManualName("");
+    setManualDose("");
+    setManualFreq("");
+  }
+
+  function handleManualContinue() {
+    if (manualMedications.length === 0) return;
+    const syntheticResult: ExtractRegimenResponse = {
+      regimenId: "manual",
+      extractionPath: "gemma_fallback",
+      confidence: 1.0,
+      medications: manualMedications,
+      interactions: [],
+      discrepancies: [],
+      followUps: [],
+      needsReview: false,
+    };
+    setExtractionResult(syntheticResult);
+    setRegimenIdCapture("manual");
+    setRegimenIdStore("manual");
+    setResult(syntheticResult);
+    setLoadPhase("success");
+  }
+
   const confidencePct = result ? Math.round(result.confidence * 100) : 0;
 
   return (
@@ -176,7 +212,132 @@ export default function RegimenReviewScreen({ navigation }: Props) {
           <TouchableOpacity style={styles.retryBtn} onPress={load}>
             <Text style={styles.retryBtnText}>Try again</Text>
           </TouchableOpacity>
+          <View style={styles.errorAltRow}>
+            <TouchableOpacity
+              style={styles.errorAltBtn}
+              onPress={() => navigation.navigate("DischargeCapture")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.errorAltText}>Scan again</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.errorAltBtn}
+              onPress={() => setLoadPhase("manual")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.errorAltText}>Enter manually</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      )}
+
+      {/* Manual entry */}
+      {loadPhase === "manual" && (
+        <>
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            <Text style={styles.eyebrow}>Step 3 · Manual entry</Text>
+            <Text style={styles.heading}>Enter medications</Text>
+
+            {manualMedications.length > 0 && (
+              <>
+                <Text style={styles.sectionLabel}>
+                  Added ({manualMedications.length})
+                </Text>
+                <View style={styles.card}>
+                  {manualMedications.map((med, i) => (
+                    <View
+                      key={i}
+                      style={[
+                        styles.medRow,
+                        i < manualMedications.length - 1 && styles.medRowBorder,
+                      ]}
+                    >
+                      <View style={styles.medMain}>
+                        <View style={styles.medNameRow}>
+                          <Text style={styles.medName}>{med.name}</Text>
+                          <Text style={styles.medDose}>{med.dose}</Text>
+                        </View>
+                        <Text style={styles.medFreq}>{med.frequency}</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() =>
+                          setManualMedications((ms) => ms.filter((_, j) => j !== i))
+                        }
+                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                      >
+                        <Text style={styles.removeText}>Remove</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+              </>
+            )}
+
+            <Text style={styles.sectionLabel}>Add a medication</Text>
+            <View style={styles.manualForm}>
+              <TextInput
+                style={styles.manualInput}
+                placeholder="Name (e.g. Lisinopril)"
+                placeholderTextColor={C.ink3}
+                value={manualName}
+                onChangeText={setManualName}
+                autoCapitalize="words"
+                returnKeyType="next"
+              />
+              <TextInput
+                style={styles.manualInput}
+                placeholder="Dose (e.g. 10 mg)"
+                placeholderTextColor={C.ink3}
+                value={manualDose}
+                onChangeText={setManualDose}
+                returnKeyType="next"
+              />
+              <TextInput
+                style={styles.manualInput}
+                placeholder="Frequency (e.g. Once daily)"
+                placeholderTextColor={C.ink3}
+                value={manualFreq}
+                onChangeText={setManualFreq}
+                returnKeyType="done"
+                onSubmitEditing={handleAddManualMed}
+              />
+              <TouchableOpacity
+                style={[
+                  styles.addMedBtn,
+                  (!manualName.trim() || !manualDose.trim() || !manualFreq.trim()) &&
+                    styles.addMedBtnDisabled,
+                ]}
+                onPress={handleAddManualMed}
+                disabled={!manualName.trim() || !manualDose.trim() || !manualFreq.trim()}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.addMedBtnText}>+ Add medication</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ height: 20 }} />
+          </ScrollView>
+
+          <View style={styles.footer}>
+            <TouchableOpacity
+              style={[styles.ctaBtn, manualMedications.length === 0 && styles.ctaBtnDisabled]}
+              onPress={handleManualContinue}
+              disabled={manualMedications.length === 0}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.ctaBtnText}>
+                {manualMedications.length === 0
+                  ? "Add at least one medication"
+                  : `Continue with ${manualMedications.length} medication${manualMedications.length !== 1 ? "s" : ""}`}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
 
       {/* Success */}
@@ -640,4 +801,51 @@ const styles = StyleSheet.create({
   },
   ctaBtnDisabled: { opacity: 0.4 },
   ctaBtnText: { color: C.bgElev, fontSize: 16, fontWeight: "500" },
+
+  // Error alternative actions
+  errorAltRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 16,
+    width: "100%",
+  },
+  errorAltBtn: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: R.pill,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: C.hairline,
+  },
+  errorAltText: { color: C.ink2, fontSize: 15, fontWeight: "500" },
+
+  // Manual medication form
+  manualForm: {
+    backgroundColor: C.surface,
+    borderWidth: 1,
+    borderColor: C.hairline,
+    borderRadius: R.md,
+    padding: 14,
+    gap: 10,
+  },
+  manualInput: {
+    backgroundColor: C.hairline2,
+    color: C.ink,
+    fontSize: 15,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: R.md,
+    borderWidth: 1,
+    borderColor: C.hairline,
+  },
+  addMedBtn: {
+    backgroundColor: C.accent,
+    paddingVertical: 13,
+    borderRadius: R.pill,
+    alignItems: "center",
+    marginTop: 4,
+  },
+  addMedBtnDisabled: { opacity: 0.35 },
+  addMedBtnText: { color: "#fff", fontSize: 15, fontWeight: "600" },
+  removeText: { color: C.danger, fontSize: 13, fontWeight: "500" },
 });
