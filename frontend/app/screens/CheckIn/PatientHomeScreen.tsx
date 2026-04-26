@@ -3,11 +3,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Animated,
+  Clipboard,
   Platform,
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -329,6 +332,17 @@ export default function PatientHomeScreen(_props: Props) {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>CADENCE · LISTENING ONLY WHEN HELD</Text>
+          {patientId && (
+            <TouchableOpacity
+              onPress={() => {
+                Clipboard.setString(patientId);
+                Alert.alert("Copied", `Patient ID: ${patientId}`);
+              }}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.patientIdText}>ID: {patientId}</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
       </SafeAreaView>
@@ -540,5 +554,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 0.08 * 12,
     color: DIMMER,
+  },
+  patientIdText: {
+    fontFamily: FONT.mono,
+    fontSize: 11,
+    color: "rgba(242,238,227,0.2)",
+    marginTop: 6,
+    letterSpacing: 0.5,
   },
 });

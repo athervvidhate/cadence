@@ -164,7 +164,7 @@ export default function RegimenReviewScreen({ navigation }: Props) {
 
   function handleStartEdit() {
     if (!result) return;
-    setManualMedications(result.medications.map((m) => ({ name: m.name, dose: m.dose, frequency: m.frequency })));
+    setManualMedications(result.medications.map((m) => ({ name: (m as any).drugName ?? m.name, dose: m.dose, frequency: m.frequency })));
     setLoadPhase("editing");
   }
 
@@ -435,7 +435,7 @@ export default function RegimenReviewScreen({ navigation }: Props) {
                   med={med}
                   isLast={i === result.medications.length - 1}
                   hasDiscrepancy={result.discrepancies.some(
-                    (d) => d.medicationName.toLowerCase() === med.name.toLowerCase()
+                    (d) => d.medicationName?.toLowerCase() === ((med as any).drugName ?? med.name)?.toLowerCase()
                   )}
                 />
               ))}
@@ -512,7 +512,7 @@ function MedicationRow({
     <View style={[styles.medRow, !isLast && styles.medRowBorder]}>
       <View style={styles.medMain}>
         <View style={styles.medNameRow}>
-          <Text style={styles.medName}>{med.name}</Text>
+          <Text style={styles.medName}>{(med as any).drugName ?? med.name}</Text>
           <Text style={styles.medDose}>{med.dose}</Text>
         </View>
         <Text style={styles.medFreq}>{med.frequency}</Text>

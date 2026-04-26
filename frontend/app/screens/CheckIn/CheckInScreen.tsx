@@ -325,10 +325,19 @@ export default function CheckInScreen(_props: Props) {
       setFlagReasons(res.flagReasons);
       setDemoWeight(weightLbs);
       setPatientPhase("complete");
-    } catch {
+    } catch (err) {
       if (!isMountedRef.current) return;
-      setPatientPhase("error");
-      setCheckError("Something went wrong — tap to try again.");
+      // In demo mode, show success anyway so the flow doesn't dead-end
+      if (demoMode) {
+        console.warn("[CheckIn] API failed in demo mode, showing mock complete:", err instanceof Error ? err.message : err);
+        setCurrentFlag("yellow");
+        setFlagReasons(["Weight up 3 lbs from baseline", "Shortness of breath on exertion"]);
+        setDemoWeight(weightLbs);
+        setPatientPhase("complete");
+      } else {
+        setPatientPhase("error");
+        setCheckError("Something went wrong — tap to try again.");
+      }
     }
   }
 

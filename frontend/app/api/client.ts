@@ -35,9 +35,10 @@ export interface FollowUp {
 }
 
 export interface MedTaken {
-  medicationName: string;
+  drugName: string;
+  dose?: string;
+  scheduled?: string;
   taken: boolean;
-  skippedReason?: string;
 }
 
 export interface Alert {
@@ -207,7 +208,10 @@ export async function createDailyLog(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error(`createDailyLog failed: ${res.status}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({})) as { error?: string };
+    throw new Error(`createDailyLog ${res.status}: ${body.error ?? "unknown"}`);
+  }
   return res.json() as Promise<CreateDailyLogResponse>;
 }
 
