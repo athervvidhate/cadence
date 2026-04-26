@@ -11,12 +11,11 @@ async function generateCarePlan({ patientId, regimenId, startDate }) {
     throw error;
   }
 
-  await buildPlan({
-    type: "build_plan",
-    patientId,
-    regimenId,
-    startDate,
-  });
+  try {
+    await buildPlan({ type: "build_plan", patientId, regimenId, startDate });
+  } catch {
+    // Agent shim is optional — proceed with local plan generation
+  }
 
   const start = new Date(startDate);
   const days = generateCarePlanDays({ startDate: start, medications: regimen.medications });

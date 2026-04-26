@@ -4,9 +4,12 @@ async function extractRegimenController(req, res) {
   const patientId = req.body.patientId;
   const pages = req.files?.pages || [];
   const bottles = req.files?.bottles || [];
-  const imageUrls = [...pages, ...bottles].map((file, index) => file.path || `uploaded://image/${index}`);
+  const imageBuffers = [...pages, ...bottles].map((file) => ({
+    buffer: file.buffer,
+    mimetype: file.mimetype || "image/jpeg",
+  }));
 
-  const result = await extractAndStoreRegimen({ patientId, imageUrls });
+  const result = await extractAndStoreRegimen({ patientId, imageBuffers });
   res.status(200).json(result);
 }
 
