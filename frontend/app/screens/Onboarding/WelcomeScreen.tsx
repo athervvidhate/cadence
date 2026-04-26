@@ -78,6 +78,13 @@ export default function WelcomeScreen({ navigation }: Props) {
           <Text style={styles.primaryBtnText}>Begin setup</Text>
           <Ionicons name="chevron-forward" size={16} color={C.bgElev} />
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.skipBtn}
+          onPress={() => navigation.navigate("PatientHome")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.skipBtnText}>Skip to demo</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -169,6 +176,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: C.hairline,
     backgroundColor: C.bgElev,
+    gap: 10,
+    alignItems: "stretch",
   },
   primaryBtn: {
     backgroundColor: C.ink,
@@ -185,5 +194,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     letterSpacing: -0.05,
+  },
+
+  skipBtn: {
+    paddingVertical: 14,
+    borderRadius: R.pill,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  skipBtnText: {
+    fontSize: 15,
+    color: C.ink3,
   },
 });
