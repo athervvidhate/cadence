@@ -69,15 +69,59 @@ function cleanJsonText(raw) {
   return text.trim();
 }
 
+function cleanString(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function clamp01(value, fallback = 0.5) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.min(1, numeric));
+}
+
+function normalizeMedication(raw) {
+  const schedule = Array.isArray(raw?.schedule)
+    ? raw.schedule.map((item) => cleanString(item)).filter(Boolean)
+    : [];
+
+  return {
+    drugName: cleanString(raw?.drugName) || cleanString(raw?.name) || "Unknown medication",
+    rxNormCode: cleanString(raw?.rxNormCode) || "unknown",
+    dose: cleanString(raw?.dose) || "unknown dose",
+    frequency: cleanString(raw?.frequency) || "as needed",
+    schedule,
+    instructions: cleanString(raw?.instructions) || "Take as directed.",
+    duration: cleanString(raw?.duration) || "ongoing",
+    indication: cleanString(raw?.indication) || "unspecified indication",
+    sourceConfidence: Number(clamp01(raw?.sourceConfidence, 0.6).toFixed(3)),
+  };
+}
+
+function normalizeFollowUp(raw) {
+  const days = Number(raw?.daysFromDischarge);
+  return {
+    type: cleanString(raw?.type) || "follow-up",
+    daysFromDischarge: Number.isFinite(days) && days > 0 ? Math.round(days) : 7,
+  };
+}
+
 function normalizeGemmaShape(payload) {
   if (!payload || typeof payload !== "object") {
     throw new Error("Gemma output is empty or invalid JSON object");
   }
+  const medications = Array.isArray(payload.medications)
+    ? payload.medications.map((med) => normalizeMedication(med))
+    : [];
+
+  const followUps = Array.isArray(payload.followUps)
+    ? payload.followUps.map((item) => normalizeFollowUp(item))
+    : [];
+
   return {
-    extractionConfidence: Number(payload.extractionConfidence || 0.85),
-    medications: Array.isArray(payload.medications) ? payload.medications : [],
+    extractionConfidence: clamp01(payload.extractionConfidence, 0.85),
+    medications,
     discrepancies: Array.isArray(payload.discrepancies) ? payload.discrepancies : [],
-    followUps: Array.isArray(payload.followUps) ? payload.followUps : [],
+    followUps,
   };
 }
 
