@@ -306,7 +306,9 @@ export default function CheckInScreen(_props: Props) {
 
     const medsTaken =
       extractionResult?.medications.map((m) => ({
-        medicationName: m.name,
+        drugName: (m as any).drugName ?? (m as any).name ?? "Unknown",
+        dose: (m as any).dose ?? "",
+        scheduled: "08:00",
         taken: true,
       })) ?? [];
 

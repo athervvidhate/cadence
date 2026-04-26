@@ -9,9 +9,10 @@ const symptomSchema = z.object({
 });
 
 const medTakenSchema = z.object({
-  drugName: z.string(),
-  dose: z.string(),
-  scheduled: z.string(),
+  drugName: z.string().optional(),
+  medicationName: z.string().optional(),
+  dose: z.string().optional(),
+  scheduled: z.string().optional(),
   taken: z.boolean(),
   actualTime: z.string().optional(),
 });
