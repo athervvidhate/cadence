@@ -3,7 +3,7 @@ import type { CaregiverProfile } from "../store/patient";
 import type { SymptomsPayload } from "../store/checkin";
 
 const BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3001";
+  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:4000";
 
 const IS_STUB = !process.env.EXPO_PUBLIC_API_URL;
 
@@ -98,7 +98,11 @@ export async function uploadVoice(
     body: form,
   });
   if (!res.ok) throw new Error(`uploadVoice failed: ${res.status}`);
-  return res.json() as Promise<UploadVoiceResponse>;
+  const body = await res.json() as UploadVoiceResponse;
+  if (body.previewUrl && body.previewUrl.startsWith('/')) {
+    body.previewUrl = `${BASE_URL}${body.previewUrl}`;
+  }
+  return body;
 }
 
 // ─── POST /api/regimens/extract ───────────────────────────────────────────────
