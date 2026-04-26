@@ -1,6 +1,6 @@
 import type { StatusLevel } from './types';
 
-export const PATIENT_ID = 'robert-chen';
+export const PATIENT_ID = import.meta.env.VITE_DEMO_PATIENT_ID || 'robert-chen';
 
 export const STATUS_META: Record<
   StatusLevel,

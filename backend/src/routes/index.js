@@ -53,6 +53,13 @@ router.post(
 
 router.get("/patients/:id/dashboard", asyncHandler(getDashboardController));
 
+router.get("/patients/:id/alerts/:alertId", asyncHandler(async (req, res) => {
+  const Alert = require("../models/Alert");
+  const alert = await Alert.findOne({ _id: req.params.alertId, patientId: req.params.id }).lean();
+  if (!alert) return res.status(404).json({ error: "Alert not found" });
+  res.json(alert);
+}));
+
 router.get("/audio", asyncHandler(streamTextAudioController));
 router.get("/voice/stream", asyncHandler(streamTextAudioController));
 

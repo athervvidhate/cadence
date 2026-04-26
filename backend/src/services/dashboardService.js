@@ -41,7 +41,11 @@ async function getDashboard(patientId) {
     adherence7d: calcAdherence(recentLogs),
     todaySymptoms: today?.symptoms || null,
     alertHistory: alerts,
-    upcomingAppointments: [],
+    upcomingAppointments: regimen?.followUps?.map((f) => {
+      const d = new Date(patient.dischargeDate);
+      d.setDate(d.getDate() + f.daysFromDischarge);
+      return { type: f.type, daysFromDischarge: f.daysFromDischarge, date: d.toISOString().slice(0, 10) };
+    }) ?? [],
     regimen: regimen
       ? { medications: regimen.medications, interactions: regimen.interactions }
       : { medications: [], interactions: [] },
