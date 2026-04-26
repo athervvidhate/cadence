@@ -3,8 +3,7 @@ const { extractAndStoreRegimen } = require("../services/regimenService");
 async function extractRegimenController(req, res) {
   const patientId = req.body.patientId;
   const pages = req.files?.pages || [];
-  const bottles = req.files?.bottles || [];
-  const imageBuffers = [...pages, ...bottles].map((file) => ({
+  const imageBuffers = pages.map((file) => ({
     buffer: file.buffer,
     mimetype: file.mimetype || "image/jpeg",
   }));

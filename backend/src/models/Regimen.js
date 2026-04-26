@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const medicationSchema = new mongoose.Schema(
   {
     drugName: { type: String, required: true },
-    rxNormCode: { type: String, required: true },
+    rxNormCode: { type: String, default: "" },
     dose: { type: String, required: true },
     frequency: { type: String, required: true },
     schedule: { type: [String], default: [] },
@@ -45,7 +45,7 @@ const followUpSchema = new mongoose.Schema(
 const regimenSchema = new mongoose.Schema({
   patientId: { type: mongoose.Schema.Types.ObjectId, ref: "Patient", required: true },
   extractedAt: { type: Date, default: Date.now },
-  extractionPath: { type: String, enum: ["zetic", "gemma_fallback"], required: true },
+  extractionPath: { type: String, enum: ["zetic", "gemma_fallback", "gemma_direct"], required: true },
   extractionConfidence: { type: Number, required: true },
   medications: { type: [medicationSchema], default: [] },
   interactions: { type: [interactionSchema], default: [] },

@@ -163,9 +163,7 @@ export async function extractRegimen(
   data.pageUris.forEach((uri, i) =>
     form.append(`pages[${i}]`, { uri, name: `page-${i}.jpg`, type: "image/jpeg" } as unknown as Blob)
   );
-  data.bottleUris.forEach((uri, i) =>
-    form.append(`bottles[${i}]`, { uri, name: `bottle-${i}.jpg`, type: "image/jpeg" } as unknown as Blob)
-  );
+  // Bottles removed — discharge pages have all dosage info
   const res = await fetch(`${BASE_URL}/api/regimens/extract`, {
     method: "POST",
     body: form,

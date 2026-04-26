@@ -53,7 +53,7 @@ export default function DischargeCaptureScreen({ navigation }: Props) {
       <SafeAreaView style={styles.permScreen} edges={["top", "bottom"]}>
         <Text style={styles.permTitle}>Camera Access Needed</Text>
         <Text style={styles.permBody}>
-          DischargeCoach needs camera access to photograph the discharge
+          Cadence needs camera access to photograph the discharge
           paperwork. Tap below to allow it.
         </Text>
         <TouchableOpacity style={styles.permBtn} onPress={requestPermission}>
@@ -241,7 +241,7 @@ export default function DischargeCaptureScreen({ navigation }: Props) {
                 styles.doneBtn,
                 pages.length === 0 && styles.doneBtnDisabled,
               ]}
-              onPress={() => navigation.navigate("BottleCapture")}
+              onPress={() => navigation.navigate("RegimenReview")}
               disabled={pages.length === 0}
               activeOpacity={0.85}
             >
