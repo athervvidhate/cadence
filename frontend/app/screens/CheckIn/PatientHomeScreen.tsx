@@ -318,6 +318,14 @@ export default function PatientHomeScreen(_props: Props) {
           </Text>
         </View>
 
+        {/* Start check-in */}
+        <Pressable
+          style={styles.checkInBtn}
+          onPress={() => _props.navigation.navigate("CheckIn")}
+        >
+          <Text style={styles.checkInBtnText}>Start check-in</Text>
+        </Pressable>
+
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>CADENCE · LISTENING ONLY WHEN HELD</Text>
@@ -507,6 +515,21 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(220,80,70,0.18)",
   },
 
+  checkInBtn: {
+    marginHorizontal: 28,
+    marginBottom: 20,
+    paddingVertical: 16,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "rgba(242,238,227,0.2)",
+    alignItems: "center",
+  },
+  checkInBtnText: {
+    color: "rgba(242,238,227,0.7)",
+    fontSize: 16,
+    fontFamily: FONT.mono,
+    letterSpacing: 0.05 * 16,
+  },
   footer: {
     paddingHorizontal: 28,
     paddingBottom: 36,

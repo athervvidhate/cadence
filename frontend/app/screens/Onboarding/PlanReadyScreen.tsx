@@ -46,7 +46,7 @@ export default function PlanReadyScreen({ navigation }: Props) {
   // Build summary rows from regimen data
   const firstFewMeds = extractionResult?.medications.slice(0, 2) ?? [];
   const medLabel = firstFewMeds.length > 0
-    ? firstFewMeds.map((m) => m.name).join(", ") +
+    ? firstFewMeds.map((m) => (m as any).drugName ?? (m as any).name).join(", ") +
       (extractionResult && extractionResult.medications.length > 2
         ? ` + ${extractionResult.medications.length - 2} others`
         : "")
