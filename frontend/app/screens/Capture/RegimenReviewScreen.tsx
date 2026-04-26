@@ -27,28 +27,7 @@ import { useCaptureStore } from "../../store/capture";
 import { C, FONT, R } from "../../theme";
 
 type Props = StackScreenProps<RootStackParamList, "RegimenReview">;
-type LoadPhase = "loading" | "success" | "error" | "manual";
-
-const FALLBACK_REGIMEN: ExtractRegimenResponse = {
-  regimenId: "demo-regimen-fallback",
-  extractionPath: "gemma_fallback",
-  confidence: 0.94,
-  medications: [
-    { name: "Furosemide", dose: "40 mg", frequency: "Once daily" } as any,
-    { name: "Carvedilol", dose: "12.5 mg", frequency: "Twice daily" } as any,
-    { name: "Lisinopril", dose: "10 mg", frequency: "Once daily" } as any,
-    { name: "Spironolactone", dose: "25 mg", frequency: "Once daily" } as any,
-  ],
-  interactions: [
-    { drugs: ["Lisinopril", "Spironolactone"], severity: "moderate", description: "Monitor potassium levels — both agents can raise serum K+." } as any,
-  ],
-  discrepancies: [],
-  needsReview: false,
-  followUps: [
-    { type: "Cardiology", daysFromDischarge: 7 } as any,
-    { type: "Primary care", daysFromDischarge: 14 } as any,
-  ],
-};
+type LoadPhase = "loading" | "success" | "error" | "manual" | "editing";
 
 function StepDots({ active, total }: { active: number; total: number }) {
   return (
@@ -126,13 +105,8 @@ export default function RegimenReviewScreen({ navigation }: Props) {
       setResult(res);
       setLoadPhase("success");
     } catch {
-      // Fall back to mock regimen so onboarding is never blocked
-      const fallback = FALLBACK_REGIMEN;
-      setExtractionResult(fallback);
-      setRegimenIdCapture(fallback.regimenId);
-      setRegimenIdStore(fallback.regimenId);
-      setResult(fallback);
-      setLoadPhase("success");
+      setApiError("We couldn't extract medications from your scan. Please try scanning again or enter them manually.");
+      setLoadPhase("error");
     }
   }
 
@@ -165,22 +139,34 @@ export default function RegimenReviewScreen({ navigation }: Props) {
     setManualFreq("");
   }
 
-  function handleManualContinue() {
+  function handleStartEdit() {
+    if (!result) return;
+    setManualMedications(result.medications.map((m) => ({ name: m.name, dose: m.dose, frequency: m.frequency })));
+    setLoadPhase("editing");
+  }
+
+  function handleFormContinue() {
     if (manualMedications.length === 0) return;
-    const syntheticResult: ExtractRegimenResponse = {
-      regimenId: "manual",
-      extractionPath: "gemma_fallback",
-      confidence: 1.0,
-      medications: manualMedications,
-      interactions: [],
-      discrepancies: [],
-      followUps: [],
-      needsReview: false,
-    };
-    setExtractionResult(syntheticResult);
-    setRegimenIdCapture("manual");
-    setRegimenIdStore("manual");
-    setResult(syntheticResult);
+    if (loadPhase === "editing" && result) {
+      const updated: ExtractRegimenResponse = { ...result, medications: manualMedications };
+      setExtractionResult(updated);
+      setResult(updated);
+    } else {
+      const syntheticResult: ExtractRegimenResponse = {
+        regimenId: "manual",
+        extractionPath: "gemma_fallback",
+        confidence: 1.0,
+        medications: manualMedications,
+        interactions: [],
+        discrepancies: [],
+        followUps: [],
+        needsReview: false,
+      };
+      setExtractionResult(syntheticResult);
+      setRegimenIdCapture("manual");
+      setRegimenIdStore("manual");
+      setResult(syntheticResult);
+    }
     setLoadPhase("success");
   }
 
@@ -192,7 +178,15 @@ export default function RegimenReviewScreen({ navigation }: Props) {
       <View style={styles.topBar}>
         <View style={{ width: 56 }} />
         <StepDots active={2} total={5} />
-        <Text style={styles.topLink}>Edit</Text>
+        <TouchableOpacity
+          onPress={handleStartEdit}
+          disabled={loadPhase !== "success"}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Text style={[styles.topLink, loadPhase !== "success" && styles.topLinkDisabled]}>
+            Edit
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Loading */}
@@ -231,8 +225,8 @@ export default function RegimenReviewScreen({ navigation }: Props) {
         </View>
       )}
 
-      {/* Manual entry */}
-      {loadPhase === "manual" && (
+      {/* Manual entry / editing */}
+      {(loadPhase === "manual" || loadPhase === "editing") && (
         <>
           <ScrollView
             style={styles.scroll}
@@ -240,13 +234,17 @@ export default function RegimenReviewScreen({ navigation }: Props) {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
-            <Text style={styles.eyebrow}>Step 3 · Manual entry</Text>
-            <Text style={styles.heading}>Enter medications</Text>
+            <Text style={styles.eyebrow}>
+              {loadPhase === "editing" ? "Step 3 · Edit medications" : "Step 3 · Manual entry"}
+            </Text>
+            <Text style={styles.heading}>
+              {loadPhase === "editing" ? "Edit medications" : "Enter medications"}
+            </Text>
 
             {manualMedications.length > 0 && (
               <>
                 <Text style={styles.sectionLabel}>
-                  Added ({manualMedications.length})
+                  {loadPhase === "editing" ? "Medications" : "Added"} ({manualMedications.length})
                 </Text>
                 <View style={styles.card}>
                   {manualMedications.map((med, i) => (
@@ -326,13 +324,15 @@ export default function RegimenReviewScreen({ navigation }: Props) {
           <View style={styles.footer}>
             <TouchableOpacity
               style={[styles.ctaBtn, manualMedications.length === 0 && styles.ctaBtnDisabled]}
-              onPress={handleManualContinue}
+              onPress={handleFormContinue}
               disabled={manualMedications.length === 0}
               activeOpacity={0.85}
             >
               <Text style={styles.ctaBtnText}>
                 {manualMedications.length === 0
                   ? "Add at least one medication"
+                  : loadPhase === "editing"
+                  ? `Save ${manualMedications.length} medication${manualMedications.length !== 1 ? "s" : ""}`
                   : `Continue with ${manualMedications.length} medication${manualMedications.length !== 1 ? "s" : ""}`}
               </Text>
             </TouchableOpacity>
@@ -596,7 +596,8 @@ const styles = StyleSheet.create({
   stepDot: { width: 22, height: 3, borderRadius: 2, backgroundColor: C.hairline },
   stepDotActive: { backgroundColor: C.accent },
   stepDotDone: { backgroundColor: C.accent, opacity: 0.4 },
-  topLink: { fontSize: 14, color: C.ink3, width: 56, textAlign: "right" },
+  topLink: { fontSize: 14, color: C.accent, width: 56, textAlign: "right" },
+  topLinkDisabled: { color: C.ink3 },
 
   loadingText: {
     fontSize: 20,
