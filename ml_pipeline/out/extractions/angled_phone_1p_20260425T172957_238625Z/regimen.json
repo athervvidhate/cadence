@@ -1,0 +1,87 @@
+{
+  "patientId": "chf_en_003-angled_phone",
+  "extractedAt": "2026-04-25T17:30:26.453758Z",
+  "extractionPath": "gemma_fallback",
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Bumetanide",
+      "rxNormCode": "778338",
+      "dose": "1 mg tablet",
+      "frequency": "once daily",
+      "schedule": [
+        "07:00"
+      ],
+      "instructions": "Take 1 tablet at 7:00 AM",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Losartan",
+      "rxNormCode": "66822",
+      "dose": "25 mg tablet",
+      "frequency": "twice daily",
+      "schedule": [
+        "07:00",
+        "19:00"
+      ],
+      "instructions": "Take 1 tablet at 7:00 AM and 1 tablet at 7:00 PM",
+      "duration": "ongoing",
+      "indication": "hypertension",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metoprolol Succinate ER",
+      "rxNormCode": "887298",
+      "dose": "25 mg tablet",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take 1 tablet at 8:00 AM",
+      "duration": "ongoing",
+      "indication": "hypertension",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Dapagliflozin",
+      "rxNormCode": "1474983",
+      "dose": "10 mg tablet",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take 1 tablet at 8:00 AM",
+      "duration": "ongoing",
+      "indication": "diabetes",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Aspirin",
+      "rxNormCode": "698",
+      "dose": "81 mg chewable",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take 1 tablet at 8:00 AM",
+      "duration": "ongoing",
+      "indication": "antiplatelet",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Atorvastatin",
+      "rxNormCode": "630826",
+      "dose": "20 mg tablet",
+      "frequency": "once daily",
+      "schedule": [
+        "21:00"
+      ],
+      "instructions": "Take 1 tablet at 9:00 PM with food",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    }
+  ]
+}

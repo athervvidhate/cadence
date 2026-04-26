@@ -1,0 +1,48 @@
+{
+  "datasetPath": "/Users/atherv/Projects/cadence/ml_pipeline/data/chf_synthetic_discharge_summaries_v1.json",
+  "predictionsDir": "/Users/atherv/Projects/cadence/ml_pipeline/out/extractions",
+  "predictionFilesScanned": [
+    "/Users/atherv/Projects/cadence/ml_pipeline/out/regimen_img_test.json"
+  ],
+  "coverage": {
+    "datasetDocuments": 10,
+    "documentsEvaluated": 0,
+    "documentsMissingPrediction": 10,
+    "missingDocumentIds": [
+      "chf_en_001",
+      "chf_en_002",
+      "chf_en_003",
+      "chf_en_004",
+      "chf_en_005",
+      "chf_en_006",
+      "chf_en_007",
+      "chf_en_008",
+      "chf_es_009",
+      "chf_es_010"
+    ],
+    "skippedPredictionFiles": [],
+    "unmappedPredictionFiles": [
+      "/Users/atherv/Projects/cadence/ml_pipeline/out/regimen_img_test.json"
+    ]
+  },
+  "overallMetrics": {
+    "fieldAccuracy": 0.0,
+    "fieldAccuracyByField": {
+      "drugName": 0.0,
+      "dose": 0.0,
+      "frequency": 0.0,
+      "schedule": 0.0,
+      "instructions": 0.0
+    },
+    "medicationPrecision": 0.0,
+    "medicationRecall": 0.0,
+    "medicationF1": 0.0,
+    "doseUnitPresenceRate": 0.0,
+    "discontinuedInclusionRate": 0.0,
+    "discontinuedInclusionCount": 0,
+    "totalPredictedMedications": 0,
+    "totalGroundTruthMedications": 0,
+    "matchedMedications": 0
+  },
+  "documents": []
+}

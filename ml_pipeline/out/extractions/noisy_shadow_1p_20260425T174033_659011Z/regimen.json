@@ -1,0 +1,88 @@
+{
+  "patientId": "chf_es_009-noisy_shadow",
+  "extractedAt": "2026-04-25T17:41:01.205670Z",
+  "extractionPath": "gemma_fallback",
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Furosemide",
+      "rxNormCode": "77983",
+      "dose": "40 mg",
+      "frequency": "twelve times daily",
+      "schedule": [
+        "08:00",
+        "20:00"
+      ],
+      "instructions": "With food.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Enalapril",
+      "rxNormCode": "6684",
+      "dose": "10 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with food.",
+      "duration": "ongoing",
+      "indication": "ACE inhibitor for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Carvedilol",
+      "rxNormCode": "78818",
+      "dose": "6.25 mg",
+      "frequency": "twelve times daily",
+      "schedule": [
+        "08:00",
+        "20:00"
+      ],
+      "instructions": "With food.",
+      "duration": "ongoing",
+      "indication": "Beta blocker for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Spironolactone",
+      "rxNormCode": "6948",
+      "dose": "25 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with food.",
+      "duration": "ongoing",
+      "indication": "Aldosterone antagonist for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Dapagliflozin",
+      "rxNormCode": "1469789",
+      "dose": "10 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take in the morning.",
+      "duration": "ongoing",
+      "indication": "SGLT2 inhibitor for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Atorvastatin",
+      "rxNormCode": "630237",
+      "dose": "40 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "20:00"
+      ],
+      "instructions": "Take at night.",
+      "duration": "ongoing",
+      "indication": "Statin for hyperlipidemia",
+      "sourceConfidence": 0.95
+    }
+  ]
+}

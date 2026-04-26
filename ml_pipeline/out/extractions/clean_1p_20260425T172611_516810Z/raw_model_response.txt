@@ -1,0 +1,62 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Furosemide",
+      "rxNormCode": "77983",
+      "dose": "40 mg",
+      "frequency": "twice daily",
+      "schedule": ["08:00", "20:00"],
+      "instructions": "Take with food.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Lisinopril",
+      "rxNormCode": "77985",
+      "dose": "10 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take by mouth.",
+      "duration": "ongoing",
+      "indication": "hypertension",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metoprolol Succinate ER",
+      "rxNormCode": "1069298",
+      "dose": "50 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Do not crush.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Spironolactone",
+      "rxNormCode": "77987",
+      "dose": "25 mg",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take by mouth.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Potassium Chloride ER",
+      "rxNormCode": "207533",
+      "dose": "20 mEq",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take with breakfast.",
+      "duration": "ongoing",
+      "indication": "potassium replacement",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```

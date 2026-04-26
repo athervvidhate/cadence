@@ -1,0 +1,73 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Bumetanide",
+      "rxNormCode": "7785",
+      "dose": "1 mg tablet",
+      "frequency": "twice daily",
+      "schedule": ["07:00", "19:00"],
+      "instructions": "Take with or without food.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Losartan",
+      "rxNormCode": "6684",
+      "dose": "25 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take every morning.",
+      "duration": "ongoing",
+      "indication": "hypertension",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metoprolol Succinate ER",
+      "rxNormCode": "10698",
+      "dose": "25 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take every morning.",
+      "duration": "ongoing",
+      "indication": "hypertension",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Dapagliflozin",
+      "rxNormCode": "1469789",
+      "dose": "10 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take every morning.",
+      "duration": "ongoing",
+      "indication": "diabetes",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Aspirin",
+      "rxNormCode": "2335",
+      "dose": "81 mg chewable",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take with food.",
+      "duration": "ongoing",
+      "indication": "antiplatelet",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Atorvastatin",
+      "rxNormCode": "6308",
+      "dose": "20 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["21:00"],
+      "instructions": "Take every evening.",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```

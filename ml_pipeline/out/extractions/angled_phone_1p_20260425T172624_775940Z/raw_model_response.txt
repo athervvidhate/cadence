@@ -1,0 +1,62 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Furosemide",
+      "rxNormCode": "77983",
+      "dose": "40 mg tablet",
+      "frequency": "twice daily",
+      "schedule": ["08:00", "20:00"],
+      "instructions": "Take 1 tablet by mouth twice daily.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Lisinopril",
+      "rxNormCode": "77985",
+      "dose": "10 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take 1 tablet by mouth once daily.",
+      "duration": "ongoing",
+      "indication": "ACE inhibitor for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metoprolol Succinate ER",
+      "rxNormCode": "106929",
+      "dose": "50 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take 1 tablet by mouth once daily. Take with food.",
+      "duration": "ongoing",
+      "indication": "beta blocker for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Spironolactone",
+      "rxNormCode": "77987",
+      "dose": "25 mg tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take 1 tablet by mouth once daily. Do not crush.",
+      "duration": "ongoing",
+      "indication": "aldosterone antagonist for CHF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Potassium Chloride ER",
+      "rxNormCode": "20725",
+      "dose": "20 mEq tablet",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Take 1 tablet by mouth once daily with breakfast.",
+      "duration": "ongoing",
+      "indication": "potassium supplementation",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```

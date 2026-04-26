@@ -1,0 +1,165 @@
+{
+  "patientId": "chf_en_007-angled_phone",
+  "extractedAt": "2026-04-25T17:37:54.794582Z",
+  "extractionPath": "gemma_fallback",
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Furosemide",
+      "rxNormCode": "77983",
+      "dose": "40 mg",
+      "frequency": "twice daily",
+      "schedule": [
+        "08:00",
+        "20:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Metolazone",
+      "rxNormCode": "6449",
+      "dose": "2.5 mg",
+      "frequency": "three times weekly",
+      "schedule": [
+        "07:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Valsartan",
+      "rxNormCode": "1068888",
+      "dose": "80 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Carvedilol",
+      "rxNormCode": "6578",
+      "dose": "12.5 mg",
+      "frequency": "twice daily",
+      "schedule": [
+        "08:00",
+        "20:00"
+      ],
+      "instructions": "Take with food.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Spironolactone",
+      "rxNormCode": "6684",
+      "dose": "25 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Dapagliflozin",
+      "rxNormCode": "1469789",
+      "dose": "10 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "diabetes",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Amiodarone",
+      "rxNormCode": "6339",
+      "dose": "200 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "09:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "arrhythmia",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Apixaban",
+      "rxNormCode": "1484398",
+      "dose": "5 mg",
+      "frequency": "twice daily",
+      "schedule": [
+        "09:00",
+        "21:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "anticoagulation",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Potassium Chloride ER",
+      "rxNormCode": "207259",
+      "dose": "20 mEq",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "potassium replacement",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Magnesium Oxide",
+      "rxNormCode": "6848",
+      "dose": "400 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "magnesium replacement",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Atorvastatin",
+      "rxNormCode": "6339",
+      "dose": "80 mg",
+      "frequency": "once daily",
+      "schedule": [
+        "21:00"
+      ],
+      "instructions": "Take with water.",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Acetaminophen",
+      "rxNormCode": "648",
+      "dose": "500 mg",
+      "frequency": "as needed",
+      "schedule": [],
+      "instructions": "Every 6 hours as needed for pain.",
+      "duration": "ongoing",
+      "indication": "pain",
+      "sourceConfidence": 0.95
+    }
+  ]
+}

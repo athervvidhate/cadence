@@ -1,0 +1,150 @@
+```json
+{
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Sacubitril/Valsartan (Entresto)",
+      "rxNormCode": "2060399",
+      "dose": "49/51 mg tab",
+      "frequency": "twice daily",
+      "schedule": ["09:00", "21:00"],
+      "instructions": "HOLD if SBP <100.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Torsemide",
+      "rxNormCode": "773528",
+      "dose": "40 mg tab",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "with food",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Carvedilol",
+      "rxNormCode": "788388",
+      "dose": "12.5 mg tab",
+      "frequency": "twice daily",
+      "schedule": ["09:00", "21:00"],
+      "instructions": "with meals",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Empagliflozin",
+      "rxNormCode": "1883888",
+      "dose": "10 mg tab",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "take in the morning",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Eplerenone",
+      "rxNormCode": "984998",
+      "dose": "25 mg tab",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "with food",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Hydralazine",
+      "rxNormCode": "7264",
+      "dose": "25 mg tab",
+      "frequency": "three times daily",
+      "schedule": ["08:00", "14:00", "20:00"],
+      "instructions": "with food",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Isosorbide Mononitrate ER",
+      "rxNormCode": "884499",
+      "dose": "30 mg tab",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Extended-release, do not crush.",
+      "duration": "ongoing",
+      "indication": "angina",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Digoxin",
+      "rxNormCode": "990",
+      "dose": "0.125 mg tab",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "Hold for HR <60.",
+      "duration": "ongoing",
+      "indication": "heart failure",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Potassium Chloride ER",
+      "rxNormCode": "207244",
+      "dose": "20 mEq tab",
+      "frequency": "once daily",
+      "schedule": ["08:00"],
+      "instructions": "with food",
+      "duration": "ongoing",
+      "indication": "potassium replacement",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Apixaban",
+      "rxNormCode": "1906243",
+      "dose": "5 mg tab",
+      "frequency": "twice daily",
+      "schedule": ["09:00", "21:00"],
+      "instructions": "take with food",
+      "duration": "ongoing",
+      "indication": "anticoagulation",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Atorvastatin",
+      "rxNormCode": "798273",
+      "dose": "40 mg tab",
+      "frequency": "once daily",
+      "schedule": ["20:00"],
+      "instructions": "at bedtime",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Pantoprazole",
+      "rxNormCode": "726983",
+      "dose": "40 mg tab",
+      "frequency": "once daily",
+      "schedule": ["07:30"],
+      "instructions": "30 minutes before breakfast.",
+      "duration": "ongoing",
+      "indication": "GERD",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Nitroglycerin SL",
+      "rxNormCode": "7360",
+      "dose": "0.4 mg",
+      "frequency": "as needed",
+      "schedule": [],
+      "instructions": "PRN chest pain, up to 3 doses in 15 minutes.",
+      "duration": "ongoing",
+      "indication": "angina",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
+```

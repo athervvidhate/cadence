@@ -1,0 +1,169 @@
+{
+  "patientId": "chf_en_002-angled_phone",
+  "extractedAt": "2026-04-25T17:28:34.474437Z",
+  "extractionPath": "gemma_fallback",
+  "extractionConfidence": 0.95,
+  "medications": [
+    {
+      "drugName": "Sacubitril/Valsartan (Entresto)",
+      "rxNormCode": "2064339",
+      "dose": "49/51 mg tab",
+      "frequency": "twice daily",
+      "schedule": [
+        "09:00",
+        "21:00"
+      ],
+      "instructions": "HOLD if SBP <100.",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Torsemide",
+      "rxNormCode": "876988",
+      "dose": "40 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "PO qAM",
+      "duration": "ongoing",
+      "indication": "diuretic for fluid overload",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Carvedilol",
+      "rxNormCode": "63124",
+      "dose": "12.5 mg tab",
+      "frequency": "twice daily",
+      "schedule": [
+        "09:00",
+        "21:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Empagliflozin",
+      "rxNormCode": "1465488",
+      "dose": "10 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "PO with meals",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Eplerenone",
+      "rxNormCode": "989498",
+      "dose": "25 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Hydralazine",
+      "rxNormCode": "6688",
+      "dose": "25 mg tab",
+      "frequency": "three times daily",
+      "schedule": [
+        "08:00",
+        "14:00",
+        "20:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Isosorbide Mononitrate ER",
+      "rxNormCode": "883448",
+      "dose": "30 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Digoxin",
+      "rxNormCode": "9005",
+      "dose": "0.125 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "HF",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Potassium Chloride ER",
+      "rxNormCode": "207533",
+      "dose": "20 mEq tab",
+      "frequency": "once daily",
+      "schedule": [
+        "08:00"
+      ],
+      "instructions": "Hold for HR <60.",
+      "duration": "ongoing",
+      "indication": "electrolyte replacement",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Apixaban",
+      "rxNormCode": "1484918",
+      "dose": "5 mg tab",
+      "frequency": "twice daily",
+      "schedule": [
+        "09:00",
+        "21:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "anticoagulation",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Atorvastatin",
+      "rxNormCode": "633539",
+      "dose": "40 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "09:00"
+      ],
+      "instructions": "PO",
+      "duration": "ongoing",
+      "indication": "hyperlipidemia",
+      "sourceConfidence": 0.95
+    },
+    {
+      "drugName": "Pantoprazole",
+      "rxNormCode": "726988",
+      "dose": "40 mg tab",
+      "frequency": "once daily",
+      "schedule": [
+        "20:00"
+      ],
+      "instructions": "PO, 30 min before breakfast",
+      "duration": "ongoing",
+      "indication": "PPI",
+      "sourceConfidence": 0.95
+    }
+  ]
+}
